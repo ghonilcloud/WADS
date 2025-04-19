@@ -1,0 +1,238 @@
+.ticket-detail {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+  
+  .profile-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .subject {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  
+  .avatar {
+    font-size: 40px;
+    margin-right: 15px;
+    background-color: #eee;
+    border-radius: 50%;
+    padding: 10px;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #2c3e50;
+  }
+  
+  .date {
+    font-size: 0.9rem;
+    color: #777;
+  }
+
+  .late {
+    color: #b45f06;
+  }
+  
+  .product-issues {
+    color: #45818e;
+  }
+  
+  .shipping {
+    color: #674ea7;
+  }
+  
+  .not-assigned {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .handler {
+    color: #009e0f;
+  }
+  
+  .high { color: #cf2a27; }
+    .low { color: #bf9000; }
+    .medium { color: orange; }
+    .critical { color: purple; }
+
+    .new {background-color: #b1b2b5; }
+    .open { background-color: #9fc5f8; }
+    .pending { background-color: rgb(245, 245, 119); }
+    .on-hold { background-color: rgb(255, 119, 109); }
+    .resolved { background-color: #b6d7a8; }
+  
+  .status {
+    width: 85px;
+    margin-right: 10px;
+    padding: 4px 8px;
+    border: 2px solid black;
+    font-weight: bold;
+    border-radius: 3px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .ticket-detail p {
+    margin: 12px 0;
+    line-height: 1.5;
+  }
+  
+  .ticket-detail strong {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  select {
+    padding: 8px 12px;
+    margin-left: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+  }
+  
+  .edit-btn {
+    margin-top: 20px;
+    background-color: #003366;
+    color: rgb(255, 255, 255);
+    padding: 6px 20px;
+    border: none;
+    border-radius: 3px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .edit-btn:hover {
+    background-color: #004dcc;
+  }
+  
+  @media (max-width: 600px) {
+    .ticket-detail {
+      padding: 20px;
+    }
+  
+    .avatar {
+      width: 50px;
+      height: 50px;
+      font-size: 32px;
+    }
+  }
+  
+.back-btn {
+    margin-top: 60px;
+    margin-left: 10px;
+}
+
+/* Chatbox Icon */
+.chat-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(0,0,0,0.15);
+    z-index: 1000;
+  }
+  
+  /* Chatbox Popup */
+  .chatbox-popup {
+    position: fixed;
+    bottom: 83px;
+    right: 20px;
+    width: 280px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: sans-serif;
+  }
+  
+  .chatbox-header {
+    background-color: #f9f9f9;
+    padding: 10px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .chatbox-body {
+    padding: 10px;
+    flex: 1;
+    overflow-y: auto;
+    max-height: 200px;
+  }
+  
+  .chat-message {
+    margin-bottom: 10px;
+    max-width: 80%;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  
+  .chat-message.user {
+    background-color: #ffe5cc;
+    align-self: flex-start;
+  }
+  
+  .chat-message.agent {
+    background-color: #ffe8d6;
+    align-self: flex-end;
+  }
+  
+  .chat-time {
+    font-size: 10px;
+    color: #888;
+    margin-top: 2px;
+    display: block;
+    text-align: right;
+  }
+  
+  .chatbox-input {
+    display: flex;
+    border-top: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .chatbox-input input {
+    flex: 1;
+    border: none;
+    padding: 8px;
+    outline: none;
+  }
+  
+  .chatbox-input button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: not-allowed;
+    color: #aaa;
+  }
+  
