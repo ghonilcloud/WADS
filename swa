@@ -1,0 +1,51 @@
+[33m84c1e43[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m Merge branch 'master' of https://github.com/ghonilcloud/WADS
+[33mc44eaec[m 41
+[33mfff6cb3[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m 40
+[33m6bb0adf[m 39
+[33m34fa929[m 38
+[33m88a04d4[m 37
+[33m3548c7c[m 36
+[33m03bbdb3[m 35
+[33m9121ac0[m 31
+[33m449d00b[m 30
+[33me1ac82d[m 28
+[33m549f43d[m 27
+[33m51c9068[m 26
+[33ma19ca8a[m 25
+[33m4eea283[m 24
+[33md9f114b[m 23
+[33m97fac30[m 22
+[33m27c8828[m 21
+[33m81dbbd0[m 20
+[33mbab2218[m 19
+[33m3198fd2[m 18
+[33m8bd854d[m 15
+[33mdcd2d1d[m 14
+[33mb7197c8[m 13
+[33mada0c4e[m 12
+[33mf306d14[m cicd 10
+[33m1594554[m cicd 9
+[33m4748cd7[m cicd 9
+[33m825f0b9[m cicd piewjnaf 8
+[33mbf30e31[m cicd pipeline 7
+[33m488f5c3[m cicd pipeline 6
+[33mbe8767b[m cicd pipeline 5
+[33md78de0e[m cicd pipeline 4
+[33mcac743a[m cicd pipeline 3
+[33m920777b[m deploy cicd pipeline
+[33m9a47833[m deleted deprecated files
+[33m9a87bf2[m fixed env
+[33m45ff740[m updated .gitignore
+[33m933f3cf[m finalization
+[33mc50584c[m added fixes for UI!!
+[33m9f32fc0[m added swagger
+[33m82cf442[m fixed .env string and added documentation telling myself to use the command prompt command to actually run the database
+[33m206831b[m remove sensitive stuff 2
+[33mac467b3[m merged stuff
+[33m294c1e3[m Axios Implementation
+[33m9de7a24[m made all pages responsive to different screen sizes
+[33m3895838[m Add OAuth implementation and update authentication system
+[33mffa503d[m Merge remote-tracking branch 'origin/master' and resolve conflicts keeping local changes with Chatbot integration
+[33m5db2444[m adding ai
+[33m9bdcb8d[m Update user management and UI components
+[33m97a5b58[m Back-end Implementation
