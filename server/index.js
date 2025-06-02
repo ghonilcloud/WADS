@@ -20,6 +20,7 @@ const oauthRoutes = require('./routes/oauthRoutes');
 
 // const auth = require('./middleware/auth');
 const dotenv = require('dotenv');
+const { faHourglassEnd } = require('@fortawesome/free-solid-svg-icons');
 dotenv.config();
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
@@ -35,10 +36,8 @@ app.use(session({
 // Initialize Passport and CORS
 app.use(passport.initialize());
 app.use(cors({
-    origin: 'https://e2425-wads-l4bcg2-client.csbihub.id', // Frontend URL
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: '*', // Frontend URL
+    credentials: false,
 }));
 
 // Body parser middleware
