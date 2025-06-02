@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   backend:
-    image: viondjunaidy/finalproject-backend:latest
+    image: viondjunaidy/finalproject2-backend:latest
     restart: always
     environment:
       PORT:  ${PORT}
@@ -22,7 +22,7 @@ services:
       - "3018:3018"
 
   frontend:
-    image: viondjunaidy/finalproject-frontend:latest
+    image: viondjunaidy/finalproject2-frontend:latest
     restart: always
     depends_on:
       - backend
