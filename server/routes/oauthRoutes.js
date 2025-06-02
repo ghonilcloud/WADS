@@ -8,9 +8,9 @@ router.get('/google',
     passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-// Google OAuth callback
 router.get('/google/callback',
-    passport.authenticate('google', { session: false }),    async (req, res) => {
+    passport.authenticate('google', { session: false }),
+    async (req, res) => {
         try {
             // Create JWT token
             const token = jwt.sign(
@@ -22,11 +22,14 @@ router.get('/google/callback',
             req.user.tokens = req.user.tokens || [];
             req.user.tokens.push({ token });
             await req.user.save();            
-            // Redirect to frontend with token
-            res.redirect(`https://e2425-wads-l4bcg2-client.csbihub.id/oauth-callback?token=${token}`);
+            
+            // Use environment variable for client URL
+            const clientURL = process.env.CLIENT_URL || 'https://e2425-wads-l4bcg2-client.csbihub.id';
+            res.redirect(`${clientURL}/oauth-callback?token=${token}`);
         } catch (error) {
             console.error('OAuth callback error:', error);
-            res.redirect(`https://e2425-wads-l4bcg2-client.csbihub.id/login?error=auth_failed`);
+            const clientURL = process.env.CLIENT_URL || 'https://e2425-wads-l4bcg2-client.csbihub.id';
+            res.redirect(`${clientURL}/login?error=auth_failed`);
         }
     }
 );
