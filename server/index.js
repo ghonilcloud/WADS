@@ -43,11 +43,11 @@ const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT;
 
 // Middleware setup
-// app.use(session({
-//     secret: process.env.JWT_SECRET,
-//     resave: false,
-//     saveUninitialized: false
-// }));
+app.use(session({
+    secret: process.env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
 
 app.set('trust proxy', true); 
 
