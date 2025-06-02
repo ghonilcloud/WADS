@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       PORT: 3018
-      CONNECTION_URL: mongodb://e2425-wads-l4bcg2:motis6u2@mongodb:27017/e2425-wads-l4bcg2?authSource=e2425-wads-l4bcg2
+      CONNECTION_URL: mongodb://e2425-wads-l4bcg2:motis6u2@localhost:27017/?authSource=e2425-wads-l4bcg2
       EMAIL_USER: cottoneightservice@gmail.com
       EMAIL_PASSWORD: dcoe wiwm hrbz wwwe
       CLOUDINARY_CLOUD_NAME: dfe7uyntq
