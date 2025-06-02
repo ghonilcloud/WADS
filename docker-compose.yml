@@ -7,6 +7,7 @@ services:
     environment:
       PORT:  ${PORT}
       CONNECTION_URL: ${CONNECTION_URL}
+      JWT_SECRET:  ${JWT_SECRET}
       EMAIL_USER:  ${EMAIL_USER}
       EMAIL_PASS:  ${EMAIL_PASS}
       CLOUDINARY_CLOUD_NAME:  ${CLOUDINARY_CLOUD_NAME}
