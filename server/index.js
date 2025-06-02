@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const app = express();
 
@@ -45,6 +46,10 @@ app.use(cors({
     maxAge: 86400,
     optionsSuccessStatus: 204
 }));
+
+app.use(cookieParser());
+
+app.set('trust proxy', true); 
 
 // Body parser middleware
 
