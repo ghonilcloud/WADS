@@ -5,6 +5,7 @@ import FileAttachments from '../../components/FileAttachments';
 import SatisfactionSurveyModal from '../../components/SatisfactionSurveyModal';
 import ticketService from '../../services/ticketService';
 import chatService from '../../services/chatService';
+import authService from '../../services/authService';
 import './ticketDetail.css';
 
 const TicketDetailCust = () => {
@@ -29,18 +30,8 @@ const TicketDetailCust = () => {
                     return;
                 }
 
-                // Fetch user data
-                const userResponse = await fetch('/api/user/profile', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!userResponse.ok) {
-                    throw new Error('Failed to fetch user data');
-                }
-
-                const user = await userResponse.json();
+                // Fetch user data using authService
+                const user = await authService.getCurrentUser();
                 
                 if (user.role !== 'customer') {
                     navigate('/login');

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './analytics.css';
 import Header from "../../components/header-admin-analytics";
 import analyticsService from "../../services/analyticsService";
+import authService from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { Bar } from 'react-chartjs-2';
 import {
@@ -50,23 +51,15 @@ const Analytics = () => {
                     return;
                 }
                 
-                // Fetch user profile
-                const response = await fetch('/api/user/profile', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch user data');
-                }
-
-                const user = await response.json();
-                if (user.role !== 'admin') {
+                // Fetch user profile using authService
+                const userData = await authService.getCurrentUser();
+                
+                if (userData.role !== 'admin') {
                     navigate('/login');
                     return;
                 }
-                setUserData(user);
+                
+                setUserData(userData);
 
                 // Fetch analytics data
                 const analyticsData = await analyticsService.getAnalyticsData();

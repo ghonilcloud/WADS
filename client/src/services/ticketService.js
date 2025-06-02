@@ -1,156 +1,107 @@
-const API_URL = '/api/tickets';
+import api from './api';
 
 const ticketService = {
     async getTicketsByUser() {
-        const token = localStorage.getItem('token');
-        const response = await fetch(API_URL, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch tickets');
+        try {
+            const response = await api.get('/tickets');
+            return response.data.tickets;
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Failed to fetch tickets');
         }
-
-        const data = await response.json();
-        return data.tickets;
     },
 
     async getTicketById(ticketId) {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/${ticketId}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
+        try {
+            const response = await api.get(`/tickets/${ticketId}`);
+            if (!response.data.ticket) {
+                throw new Error('Ticket not found');
             }
-        });
-
-        const data = await response.json();
-        
-        if (!response.ok) {
-            throw new Error(data.message || 'Failed to fetch ticket');
+            return response.data.ticket;
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Failed to fetch ticket details');
         }
-
-        if (!data.ticket) {
-            throw new Error('Ticket not found');
-        }
-
-        return data.ticket;
     },
 
     async submitSurvey(ticketId, { rating, feedback }) {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/${ticketId}`, {
-            method: 'PATCH',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
+        try {
+            const response = await api.patch(`/tickets/${ticketId}`, {
                 rating,
                 ratingFeedback: feedback
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to submit survey');
+            });
+            return response.data.ticket;
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Failed to submit survey');
         }
-
-        const data = await response.json();
-        return data.ticket;
     },
 
     async getAllTickets() {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/all`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch tickets');
+        try {
+            const response = await api.get('/tickets/all');
+            return response.data.tickets;
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Failed to fetch tickets');
         }
-
-        const data = await response.json();
-        return data.tickets;
     },
 
     async updateTicketStatus(ticketId, status) {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/${ticketId}`, {
-            method: 'PATCH',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ status })
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to update ticket status');
+        try {
+            const response = await api.patch(`/tickets/${ticketId}`, { status });
+            return response.data.ticket;
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Failed to update ticket status');
         }
-
-        const data = await response.json();
-        return data.ticket;
     },
 
     async updateTicketPriority(ticketId, priority) {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/${ticketId}`, {
-            method: 'PATCH',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ priority })
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to update ticket priority');
+        try {
+            const response = await api.patch(`/tickets/${ticketId}`, { priority });
+            return response.data.ticket;
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Failed to update ticket priority');
         }
-
-        const data = await response.json();
-        return data.ticket;
     },
 
     async assignTicket(ticketId, handlerId) {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/${ticketId}`, {
-            method: 'PATCH',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ handlerId })
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to assign ticket');
+        try {
+            const response = await api.patch(`/tickets/${ticketId}`, { handlerId });
+            return response.data.ticket;
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Failed to assign ticket');
         }
-
-        const data = await response.json();
-        return data.ticket;
+    },    async updateTicket(ticketId, updateData) {
+        try {
+            const response = await api.patch(`/tickets/${ticketId}`, updateData);
+            return response.data.ticket;
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Failed to update ticket');
+        }
     },
-
-    async updateTicket(ticketId, updateData) {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/${ticketId}`, {
-            method: 'PATCH',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updateData)
-        });
-
-        if (!response.ok) {
-            const data = await response.json();
-            throw new Error(data.message || 'Failed to update ticket');
+      async createTicket(ticketData, files) {
+        try {
+            const formData = new FormData();
+            
+            // Add all ticket data to form
+            Object.keys(ticketData).forEach(key => {
+                formData.append(key, ticketData[key]);
+            });
+            
+            // Add all files
+            if (files && files.length) {
+                for (let i = 0; i < files.length; i++) {
+                    formData.append('attachments', files[i]);
+                }
+            }
+            
+            const response = await api.post('/tickets', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            });
+            
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Failed to create ticket');
         }
-
-        const data = await response.json();
-        return data.ticket;
     }
 };
 

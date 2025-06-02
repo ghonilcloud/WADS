@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
+import authService from '../../services/authService';
 
 const OAuthCallback = () => {
     const navigate = useNavigate();
@@ -13,32 +14,44 @@ const OAuthCallback = () => {
     useEffect(() => {
         const fetchUserAndRedirect = async () => {
             const token = searchParams.get('token');
-            if (!token) {
+            const code = searchParams.get('code');
+            const state = searchParams.get('state');
+            
+            if (!token && (!code || !state)) {
+                setError('Missing authentication data');
                 navigate('/login');
                 return;
-            }            try {
-                // Store the token temporarily
-                localStorage.setItem('token', token);                // Fetch user data to determine role
-                const response = await fetch('/api/user/profile', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    credentials: 'include'
-                });
+            }
+            
+            try {
+                // Handle OAuth callback if code and state are present
+                if (code && state) {
+                    const response = await authService.handleOAuthCallback(code, state);
+                    if (response.token) {
+                        // Store the token
+                        localStorage.setItem('token', response.token);
+                    } else {
+                        throw new Error('No token received from OAuth callback');
+                    }
+                } else if (token) {
+                    // If we received a token directly (old flow), store it
+                    localStorage.setItem('token', token);
+                }
+                
+                // Fetch user data to determine role
+                const userData = await authService.getCurrentUser();
+                const user = userData.user || userData;
 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch user data');
-                }                const user = await response.json();                // Check if this is a new user (needs to complete signup)
+                // Check if this is a new user (needs to complete signup)
                 if (!user.phone || !user.birthDate || !user.gender) {
                     // Store token temporarily
-                    localStorage.setItem('temp_token', token);
+                    localStorage.setItem('temp_token', token || localStorage.getItem('token'));
                     navigate('/signup/complete');
                     return;
                 }
 
                 // For existing users, proceed with normal login
-                login(token);
+                login(token || localStorage.getItem('token'));
 
                 // Redirect based on user role
                 const rolePaths = {
@@ -62,23 +75,16 @@ const OAuthCallback = () => {
     const handlePhoneSubmit = async (e) => {
         e.preventDefault();
         try {
-            const token = searchParams.get('token');
-            const response = await fetch('/api/user/complete-signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                credentials: 'include',
-                body: JSON.stringify({ phone })
+            const token = searchParams.get('token') || localStorage.getItem('temp_token');
+            
+            // Use authService to complete OAuth signup
+            const response = await authService.completeOAuthSignup({ 
+                phone,
+                token
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to complete signup');
-            }
-
             // After successful phone number submission, proceed with login
-            login(token);
+            login(response.token || token);
             navigate('/cust-home');
         } catch (error) {
             setError(error.message);

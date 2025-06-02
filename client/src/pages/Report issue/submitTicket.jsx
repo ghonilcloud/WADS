@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Header from "../../components/header-cust-submit-ticket";
 import "./submitTicket.css";
 import { useNavigate } from 'react-router-dom';
+import authService from "../../services/authService";
+import ticketService from "../../services/ticketService";
 
 const SubmitTicket = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +17,6 @@ const SubmitTicket = () => {
   const [success, setSuccess] = useState(false);
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -25,25 +26,15 @@ const SubmitTicket = () => {
           return;
         }
 
-        const response = await fetch('/api/user/profile', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-
-        const user = await response.json();
+        const userData = await authService.getCurrentUser();
         
         // Check if user has customer role
-        if (user.role !== 'customer') {
+        if (userData.role !== 'customer') {
           navigate('/login');
           return;
         }
 
-        setUserData(user);
+        setUserData(userData);
       } catch (error) {
         console.error("Error fetching user data:", error);
         navigate('/login');
@@ -61,7 +52,6 @@ const SubmitTicket = () => {
   const handleFileChange = (e) => {
     setUploadedFiles(e.target.files);
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -79,25 +69,17 @@ const SubmitTicket = () => {
         throw new Error("Description is required");
       }
 
-      // Prepare form data for API
-      const ticketData = new FormData();
-      ticketData.append("subject", formData.subject);
-      ticketData.append("category", formData.category);
-      ticketData.append("description", formData.description);
-      for (let i = 0; i < uploadedFiles.length; i++) {
-        ticketData.append("attachments", uploadedFiles[i]);
-      }
+      // Prepare ticket data
+      const ticketData = {
+        subject: formData.subject,
+        category: formData.category,
+        description: formData.description
+      };
 
-      // Send API request
-      const response = await fetch('/api/tickets', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        },
-        body: ticketData
-      });
-
-      if (!response.ok) {
+      // Send API request using our ticketService
+      const response = await ticketService.createTicket(ticketData, Array.from(uploadedFiles));
+      
+      if (!response) {
         throw new Error("Failed to submit ticket");
       }
 

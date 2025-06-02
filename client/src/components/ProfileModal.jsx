@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ProfileModal.css';
 import authService from '../services/authService';
+import userService from '../services/userService';
 
 const ProfileModal = ({ isOpen, onClose, userData }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -62,25 +63,10 @@ const ProfileModal = ({ isOpen, onClose, userData }) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const formData = new FormData();
-    formData.append('profilePicture', file);
-
     setUploadingImage(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/user/profile-picture', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        body: formData
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to upload image');
-      }
-
-      const data = await response.json();
+      const data = await userService.uploadProfilePicture(file);
+      
       setEditData(prev => ({
         ...prev,
         profilePicture: data.profilePicture
@@ -98,21 +84,7 @@ const ProfileModal = ({ isOpen, onClose, userData }) => {
     setError(null);
     
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/user/profile', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(editData)
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update profile');
-      }
-
-      const updatedUser = await response.json();
+      const updatedUser = await userService.updateProfile(editData);
       setSuccess(true);
       setLoading(false);
       

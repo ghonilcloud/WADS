@@ -5,12 +5,12 @@ import AboutUs from "./components/aboutUs";
 import Catalog from "./components/catalog";
 import Footer from "./components/footer";
 import Chatbot from "../../components/Chatbot";
+import authService from "../../services/authService";
 
 const CustHome = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -20,17 +20,7 @@ const CustHome = () => {
           return;
         }
 
-        const response = await fetch('/api/user/profile', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-
-        const user = await response.json();
+        const user = await authService.getCurrentUser();
         
         // Check if user has customer role
         if (user.role !== 'customer') {

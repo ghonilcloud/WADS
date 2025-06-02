@@ -4,12 +4,12 @@ import Header from "../../components/header-admin";
 import AboutUs from "./components/aboutUs";
 import Catalog from "./components/catalog";
 import Footer from "./components/footer";
+import authService from "../../services/authService";
 
 const AdminHome = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -19,19 +19,9 @@ const AdminHome = () => {
           return;
         }
 
-        const response = await fetch('/api/user/profile', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-
-        const user = await response.json();
+        const user = await authService.getCurrentUser();
         
-        // Check if user has customer role
+        // Check if user has admin role
         if (user.role !== 'admin') {
           navigate('/login');
           return;

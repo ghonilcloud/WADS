@@ -1,11 +1,18 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
 
 const OAuthLoginButton = ({ isSignup = false }) => {
     const handleGoogleAuth = () => {
         // Redirect to backend OAuth route with signup flag
         const endpoint = isSignup ? '/api/auth/google/signup' : '/api/auth/google';
-        window.location.href = `https://e2425-wads-l4bcg2-server.csbihub.id${endpoint}`;
+        
+        // Use the baseURL from our api configuration
+        const baseURL = import.meta.env.PROD
+            ? 'https://e2425-wads-l4bcg2-server.csbihub.id'
+            : '';
+            
+        window.location.href = `${baseURL}${endpoint}`;
     };
 
     return (

@@ -3,6 +3,7 @@ import Header from "../../components/header-cust-my-tickets";
 import { useNavigate } from 'react-router-dom';
 import './ticketsAll.css';
 import ticketService from '../../services/ticketService';
+import authService from '../../services/authService';
 
 const TicketsCust = () => {
     const [filterStatus, setFilterStatus] = useState('');
@@ -20,20 +21,8 @@ const TicketsCust = () => {
                 if (!token) {
                     navigate('/login');
                     return;
-                }
-
-                // Fetch user profile
-                const userResponse = await fetch('/api/user/profile', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!userResponse.ok) {
-                    throw new Error('Failed to fetch user data');
-                }
-
-                const user = await userResponse.json();
+                }                // Fetch user profile using authService
+                const user = await authService.getCurrentUser();
                 
                 // Check if user has customer role
                 if (user.role !== 'customer') {

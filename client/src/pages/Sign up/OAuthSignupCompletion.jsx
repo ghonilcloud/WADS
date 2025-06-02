@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from "../../components/header-signup";
+import authService from "../../services/authService";
 import "./signup.css";
 
 const OAuthSignupCompletion = () => {
@@ -27,27 +28,20 @@ const OAuthSignupCompletion = () => {
 
         try {
             const token = localStorage.getItem('temp_token'); // Using temp token from OAuth
-            const response = await fetch('/api/user/complete-oauth-signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                credentials: 'include',
-                body: JSON.stringify(formData)
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || 'Failed to complete signup');
-            }
-
+            
+            // Add token to the form data for authentication
+            const userData = {
+                ...formData,
+                token
+            };
+            
+            // Use the authService to complete OAuth signup
+            const response = await authService.completeOAuthSignup(userData);
+            
             // Store the final token and redirect
-            localStorage.setItem('token', data.token);
             navigate('/cust-home');
         } catch (error) {
-            setError(error.message);
+            setError(error.message || 'Failed to complete signup');
             setLoading(false);
         }
     };

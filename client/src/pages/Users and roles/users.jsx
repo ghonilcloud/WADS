@@ -3,6 +3,8 @@ import Header from "../../components/header-admin-users";
 import './users.css';
 import { useNavigate } from "react-router-dom";
 import analyticsService from "../../services/analyticsService";
+import authService from "../../services/authService";
+import userService from "../../services/userService";
 
 const Users = () => {
     const [loading, setLoading] = useState(true);
@@ -29,53 +31,24 @@ const Users = () => {
                 }
 
                 // Fetch user profile
-                const userResponse = await fetch('/api/user/profile', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!userResponse.ok) {
-                    throw new Error('Failed to fetch user data');
-                }
-
-                const user = await userResponse.json();
-                if (user.role !== 'admin') {
+                const userData = await authService.getCurrentUser();
+                
+                if (userData.role !== 'admin') {
                     navigate('/login');
                     return;
                 }
                 
-                setUserData(user);
+                setUserData(userData);
 
                 // Get analytics data (includes average resolution time, satisfaction)
                 const analyticsData = await analyticsService.getAnalyticsData();
 
                 // Fetch service agents (role = service_agent)
-                const agentsResponse = await fetch('/api/user/role/agents', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!agentsResponse.ok) {
-                    throw new Error('Failed to fetch service agents');
-                }
-
-                const agentsData = await agentsResponse.json();
+                const agentsData = await userService.getServiceAgents();
                 setServiceAgents(agentsData.agents);
 
                 // Fetch customers (role = customer)
-                const customersResponse = await fetch('/api/user/role/customers', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!customersResponse.ok) {
-                    throw new Error('Failed to fetch customers');
-                }
-
-                const customersData = await customersResponse.json();
+                const customersData = await userService.getCustomers();
                 setCustomers(customersData.customers);
 
                 // Update metrics
