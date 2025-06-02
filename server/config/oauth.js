@@ -28,7 +28,9 @@ passport.deserializeUser(async (id, done) => {
 // Configure Google Strategy
 passport.use(new GoogleStrategy({    clientID: process.env.GOOGLE_CLIENT_ID.trim(),
     clientSecret: process.env.GOOGLE_CLIENT_SECRET.trim(),
-    callbackURL: "http://localhost:5173/api/auth/google/callback",
+    callbackURL: process.env.NODE_ENV === 'production' 
+        ? "https://e2425-wads-l4bcg2-server.csbihub.id/api/auth/google/callback"
+        : "http://localhost:3018/api/auth/google/callback",
     proxy: true
 }, async (accessToken, refreshToken, profile, done) => {
     try {

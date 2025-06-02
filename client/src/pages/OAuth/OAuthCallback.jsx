@@ -19,7 +19,7 @@ const OAuthCallback = () => {
             }            try {
                 // Store the token temporarily
                 localStorage.setItem('token', token);                // Fetch user data to determine role
-                const response = await fetch('https://e2425-wads-l4bcg2-server.csbihub.id/api/user/profile', {
+                const response = await fetch('/api/user/profile', {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -63,7 +63,7 @@ const OAuthCallback = () => {
         e.preventDefault();
         try {
             const token = searchParams.get('token');
-            const response = await fetch('https://e2425-wads-l4bcg2-server.csbihub.id/api/user/complete-signup', {
+            const response = await fetch('/api/user/complete-signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

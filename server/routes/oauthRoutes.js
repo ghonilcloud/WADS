@@ -21,13 +21,11 @@ router.get('/google/callback',
             // Store token in user's tokens array
             req.user.tokens = req.user.tokens || [];
             req.user.tokens.push({ token });
-            await req.user.save();
-
-            // Redirect to frontend with token
-            res.redirect(`http://localhost:5173/oauth-callback?token=${token}`);
+            await req.user.save();            // Redirect to frontend with token
+            res.redirect(`https://e2425-wads-l4bcg2-client.csbihub.id/oauth-callback?token=${token}`);
         } catch (error) {
             console.error('OAuth callback error:', error);
-            res.redirect(`http://localhost:5173/login?error=auth_failed`);
+            res.redirect(`https://e2425-wads-l4bcg2-client.csbihub.id/login?error=auth_failed`);
         }
     }
 );
