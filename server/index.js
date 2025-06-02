@@ -27,7 +27,7 @@ app.use(cors({
     origin: process.env.NODE_ENV === 'production' 
         ? ['https://e2425-wads-l4bcg2-client.csbihub.id'] 
         : ['http://localhost:5173', 'http://127.0.0.1:5173'],
-    credentials: true,
+    credentials: false,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
     exposedHeaders: ['Content-Length', 'X-Content-Type-Options'],
