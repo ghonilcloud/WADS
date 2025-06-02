@@ -33,9 +33,36 @@ const authService = {
 
   async login(credentials) {
     try {
-      const response = await api.post('/user/login', credentials);
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
+      const response = await fetch(`${API_URL}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(credentials),
+      });
+
+      // Check if response is OK before trying to parse JSON
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Login response error:', response.status, errorText);
+        try {
+          const errorData = JSON.parse(errorText);
+          throw new Error(errorData.message || 'Login failed');
+        } catch (e) {
+          throw new Error(`Login failed with status ${response.status}: ${errorText.substring(0, 100)}`);
+        }
+      }
+
+      const data = await response.json();
+      
+      if (!data || !data.user) {
+        console.error('Invalid login response data:', data);
+        throw new Error('Invalid response from server');
+      }
+
+      if (data.token) {
+        localStorage.setItem('token', data.token);
       }
       return response.data;
     } catch (error) {
