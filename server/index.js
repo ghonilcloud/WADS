@@ -34,7 +34,7 @@ app.use(session({
 // Initialize Passport and CORS
 app.use(passport.initialize());
 app.use(cors({
-    origin: 'http://localhost:5173', // Frontend URL
+    origin: 'https://e2425-wads-l4bcg2-client.csbihub.id', // Frontend URL
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization']
