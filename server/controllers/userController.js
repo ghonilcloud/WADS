@@ -2,6 +2,7 @@ const User = require('../models/user');
 const Ticket = require('../models/ticket');
 const { userSendMail } = require('./otpController');
 const cloudinary = require('../config/cloudinary');
+const bcrypt = require('bcryptjs');
 
 // Store OTPs in memory (in production, use Redis or similar)
 const otpStore = new Map();
@@ -131,8 +132,24 @@ const verifyOTP = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    // Pass email and password as separate parameters, not as an object
-    const user = await User.findByCredentials(email, password);
+    
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: 'Unable to login' });
+    }
+
+    // Check if user is verified
+    if (!user.isVerified) {
+      return res.status(400).json({ message: 'Please verify your email before logging in' });
+    }
+
+    // Check password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Unable to login' });
+    }
+
     const token = await user.generateAuthToken();
     res.send({ 
       user, 
