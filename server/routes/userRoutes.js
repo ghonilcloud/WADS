@@ -279,11 +279,12 @@ router.post('/verify-otp', userController.verifyOTP);
 // Protected routes
 router.get('/profile', auth, userController.getProfile);
 router.patch('/profile', auth, userController.updateProfile);
-router.get('/:userId', auth, userController.getUserById);
 router.get('/role/agents', auth, userController.getAgents);
 router.get('/role/customers', auth, userController.getCustomers);
 router.post('/profile-picture', auth, upload.single('profilePicture'), userController.uploadProfilePicture);
+router.get('/id/:userId', auth, userController.getUserById);
 // OAuth signup completion route
 router.post('/complete-oauth-signup', auth, userController.completeOAuthSignup);
+
 
 module.exports = router;

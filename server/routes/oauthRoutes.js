@@ -21,7 +21,8 @@ router.get('/google/callback',
             // Store token in user's tokens array
             req.user.tokens = req.user.tokens || [];
             req.user.tokens.push({ token });
-            await req.user.save();            // Redirect to frontend with token
+            await req.user.save();            
+            // Redirect to frontend with token
             res.redirect(`https://e2425-wads-l4bcg2-client.csbihub.id/oauth-callback?token=${token}`);
         } catch (error) {
             console.error('OAuth callback error:', error);

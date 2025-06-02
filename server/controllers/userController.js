@@ -387,6 +387,80 @@ const completeOAuthSignup = async (req, res) => {
     }
 };
 
+// Update a user's role (admin only)
+const updateUserRole = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { role } = req.body;
+
+    // Check if the requesting user is an admin
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Access denied. Admin only.' });
+    }
+
+    // Validate role
+    const validRoles = ['admin', 'agent', 'customer'];
+    if (!validRoles.includes(role)) {
+      return res.status(400).json({ message: 'Invalid role specified' });
+    }
+
+    // Find and update the user
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.role = role;
+    await user.save();
+
+    res.json({
+      message: 'User role updated successfully',
+      user: {
+        _id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error('Error updating user role:', error);
+    res.status(500).json({ message: error.message || 'Failed to update user role' });
+  }
+};
+
+// Remove a user (admin only)
+const removeUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Check if the requesting user is an admin
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Access denied. Admin only.' });
+    }
+
+    // Find and delete the user
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Don't let admin delete themselves
+    if (user._id.toString() === req.user._id.toString()) {
+      return res.status(400).json({ message: 'Cannot delete your own admin account' });
+    }
+
+    await User.findByIdAndDelete(userId);
+
+    res.json({
+      message: 'User deleted successfully'
+    });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ message: error.message || 'Failed to delete user' });
+  }
+};
+
 module.exports = {
   signUp,
   login,
@@ -400,5 +474,7 @@ module.exports = {
   verifyOTP,
   uploadProfilePicture,
   createServiceAgent,
-  completeOAuthSignup
+  completeOAuthSignup,
+  updateUserRole,
+  removeUser
 };

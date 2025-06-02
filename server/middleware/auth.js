@@ -1,35 +1,33 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-const auth = async (req, res, next) => {  try {
-    // Check Authorization header first
+const auth = async (req, res, next) => {
+  try {
     let token;
     const authHeader = req.header('Authorization');
-    
+
     if (authHeader && authHeader.startsWith('Bearer ')) {
       token = authHeader.replace('Bearer ', '');
-    } 
-    // If no Authorization header, check for token in cookies
-    else if (req.cookies && req.cookies.token) {
+    } else if (req.cookies && req.cookies.token) {
       token = req.cookies.token;
     }
-    
+
     if (!token) {
       return res.status(401).json({ message: 'Authorization token is required' });
     }
-    
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // First try to find user with token in tokens array
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (!decoded || !decoded._id) {
+      return res.status(401).json({ message: 'Invalid token payload' });
+    }
+
     let user = await User.findOne({ 
       _id: decoded._id,
       'tokens.token': token 
     });
 
-    // If not found, try to find just by _id (for backward compatibility)
     if (!user) {
       user = await User.findOne({ _id: decoded._id });
-      // Add token to user's tokens array if found
       if (user) {
         user.tokens = user.tokens || [];
         user.tokens.push({ token });
@@ -45,8 +43,8 @@ const auth = async (req, res, next) => {  try {
     req.user = user;
     next();
   } catch (error) {
-    console.error('Authentication error:', error);
-    res.status(401).json({ message: 'Please authenticate' });
+    console.error('Authentication error:', error.message);
+    return res.status(401).json({ message: 'Please authenticate' });
   }
 };
 
