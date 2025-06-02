@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
+const bodyParser = require('body-parser');
 const app = express();
 
 // Import Swagger configuration
@@ -41,6 +42,9 @@ app.use(cors({
 }));
 
 // Body parser middleware
+
+app.use(bodyParser.json({ limit: "30mb", extended: true }))
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }))
 app.use(express.json());
 
 // Serve Swagger documentation
