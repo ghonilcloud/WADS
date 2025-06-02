@@ -46,10 +46,10 @@ jobs:
           echo "export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock" >> $GITHUB_ENV
 
       - name: Pull Latest Backend Image
-        run: docker pull ${{ secrets.DOCKER_USERNAME }}/todolist-backend:latest
+        run: docker pull ${{ secrets.DOCKER_USERNAME }}/finalproject-backend:latest
 
       - name: Pull Latest Frontend Image
-        run: docker pull ${{ secrets.DOCKER_USERNAME }}/todolist-frontend:latest
+        run: docker pull ${{ secrets.DOCKER_USERNAME }}/finalproject-frontend:latest
 
       - name: Stop and Remove Old Containers
         run: |
@@ -71,4 +71,4 @@ jobs:
           EMAIL_SERVICE: gmail
           GOOGLE_CLIENT_ID: 310044493415-q6tk0ko1vemi8js1ht290pop4ircqgfg.apps.googleusercontent.com
           GOOGLE_CLIENT_SECRET: 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
-          FRONTEND_URL: http://localhost:5173
+          FRONTEND_URL: https://e2425-wads-l4bcg2-client.csbihub.id
