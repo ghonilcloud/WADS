@@ -131,7 +131,7 @@ const verifyOTP = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findByCredentials(email, password);
+    const user = await User.findByCredentials({email, password});
     const token = await user.generateAuthToken();
     res.json({ 
       user, 
