@@ -69,9 +69,11 @@ const authService = {  async sendVerificationEmail(userData) {
     try {
       const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
+        mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify(credentials),
       });
 
