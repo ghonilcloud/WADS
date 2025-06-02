@@ -60,15 +60,15 @@ jobs:
         run: |
           docker compose up -d
         env:
-          PORT: 3018
-          CONNECTION_URL: mongodb://e2425-wads-l4bcg2:motis6u2@10.25.143.17:27017/?authSource=e2425-wads-l4bcg2
-          EMAIL_USER: cottoneightservice@gmail.com
-          EMAIL_PASSWORD: dcoe wiwm hrbz wwwe
-          CLOUDINARY_CLOUD_NAME: dfe7uyntq
-          CLOUDINARY_API_KEY: 892865934638977
-          CLOUDINARY_API_SECRET: QoHBalqcQPTHWBJ1VQ88kv4_eOw
-          CLOUDINARY_URL: cloudinary://892865934638977:QoHBalqcQPTHWBJ1VQ88kv4_eOw@dfe7uyntq
-          EMAIL_SERVICE: gmail
-          GOOGLE_CLIENT_ID: 310044493415-q6tk0ko1vemi8js1ht290pop4ircqgfg.apps.googleusercontent.com
-          GOOGLE_CLIENT_SECRET: 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
-          FRONTEND_URL: https://e2425-wads-l4bcg2-client.csbihub.id
+          PORT: ${{secrets.PORT}}
+          CONNECTION_URL: ${{secrets.CONNECTION_URL}}
+          EMAIL_USER: ${{secrets.EMAIL_USER}}
+          EMAIL_PASS: ${{secrets.EMAIL_PASS}}
+          CLOUDINARY_CLOUD_NAME: ${{secrets.CLOUDINARY_CLOUD_NAME}}
+          CLOUDINARY_API_KEY: ${{secrets.CLOUDINARY_API_KEY}}
+          CLOUDINARY_API_SECRET: ${{secrets.CLOUDINARY_API_SECRET}}
+          CLOUDINARY_URL: ${{secrets.CLOUDINARY_URL}}
+          EMAIL_SERVICE: ${{secrets.EMAIL_SERVICE}}
+          GOOGLE_CLIENT_ID: ${{secrets.GOOGLE_CLIENT_ID}}
+          GOOGLE_CLIENT_SECRET: ${{secrets.GOOGLE_CLIENT_SECRET}}
+          FRONTEND_URL: ${{secrets.FRONTEND_URL}}

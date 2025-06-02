@@ -5,18 +5,18 @@ services:
     image: onealwaseem/finalproject-backend:latest
     restart: always
     environment:
-      PORT: 3018
-      CONNECTION_URL: mongodb://e2425-wads-l4bcg2:motis6u2@10.25.143.17:27017/?authSource=e2425-wads-l4bcg2
-      EMAIL_USER: cottoneightservice@gmail.com
-      EMAIL_PASSWORD: dcoe wiwm hrbz wwwe
-      CLOUDINARY_CLOUD_NAME: dfe7uyntq
-      CLOUDINARY_API_KEY: 892865934638977
-      CLOUDINARY_API_SECRET: QoHBalqcQPTHWBJ1VQ88kv4_eOw
-      CLOUDINARY_URL: cloudinary://892865934638977:QoHBalqcQPTHWBJ1VQ88kv4_eOw@dfe7uyntq
-      EMAIL_SERVICE: gmail
-      GOOGLE_CLIENT_ID: 310044493415-q6tk0ko1vemi8js1ht290pop4ircqgfg.apps.googleusercontent.com
-      GOOGLE_CLIENT_SECRET: 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
-      FRONTEND_URL: https://e2425-wads-l4bcg2-client.csbihub.id
+      PORT:  ${PORT}
+      CONNECTION_URL: ${CONNECTION_URL}
+      EMAIL_USER:  ${EMAIL_USER}
+      EMAIL_PASS:  ${EMAIL_PASS}
+      CLOUDINARY_CLOUD_NAME:  ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY:  ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET:  ${CLOUDINARY_API_SECRET}
+      CLOUDINARY_URL:  ${CLOUDINARY_URL}
+      EMAIL_SERVICE:  ${EMAIL_SERVICE}
+      GOOGLE_CLIENT_ID:  ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET:  ${GOOGLE_CLIENT_SECRET}
+      FRONTEND_URL:  ${FRONTEND_URL}
     ports:
       - "3018:3018"
 
