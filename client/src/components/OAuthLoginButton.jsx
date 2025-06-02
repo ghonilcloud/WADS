@@ -5,7 +5,7 @@ const OAuthLoginButton = ({ isSignup = false }) => {
     const handleGoogleAuth = () => {
         // Redirect to backend OAuth route with signup flag
         const endpoint = isSignup ? '/api/auth/google/signup' : '/api/auth/google';
-        window.location.href = `http://localhost:5173${endpoint}`;
+        window.location.href = `https://e2425-wads-l4bcg2-server.csbihub.id${endpoint}`;
     };
 
     return (

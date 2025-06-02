@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const OAuthLoginButton = () => {
     const handleGoogleLogin = () => {
         // Redirect to backend OAuth route
-        window.location.href = 'http://localhost:3000/api/auth/google';
+        window.location.href = 'https://e2425-wads-l4bcg2-server.csbihub.id/api/auth/google';
     };
 
     return (
