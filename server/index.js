@@ -36,11 +36,14 @@ app.use(cors({
 }));
 
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', "https://e2425-wads-l4bcg2-server.csbihub.id");
+    res.header('Access-Control-Allow-Origin', "https://e2425-wads-l4bcg2-client.csbihub.id");
+    res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
 })
+
+app.options('*', cors());
 
 // Initialize Passport and CORS
 app.use(passport.initialize());

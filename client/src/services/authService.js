@@ -106,6 +106,7 @@ const authService = {  async sendVerificationEmail(userData) {
       throw error;
     }
   },
+  
   async logout() {
     const token = localStorage.getItem('token');
     if (!token) return;
