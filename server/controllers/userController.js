@@ -133,7 +133,8 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     // Pass email and password as separate parameters, not as an object
-    const user = await User.findByCredentials(email, password);    const token = await user.generateAuthToken();
+    const user = await User.findByCredentials(email, password);    
+    const token = await user.generateAuthToken();
     res.json({ 
       user, 
       token,
