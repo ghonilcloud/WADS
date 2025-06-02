@@ -63,10 +63,13 @@ const authService = {  async sendVerificationEmail(userData) {
     }
 
     return data;  },
+
+
   async login(credentials) {
     try {
       const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
