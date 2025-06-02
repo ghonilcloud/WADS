@@ -35,8 +35,15 @@ app.use(session({
 // Initialize Passport and CORS
 app.use(passport.initialize());
 app.use(cors({
-    origin: '*', // Frontend URL
-    credentials: false,
+    origin: process.env.NODE_ENV === 'production' 
+        ? ['https://e2425-wads-l4bcg2-client.csbihub.id']
+        : ['http://localhost:5173', 'http://127.0.0.1:5173'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
+    exposedHeaders: ['Content-Length', 'X-Content-Type-Options'],
+    maxAge: 86400,
+    optionsSuccessStatus: 204
 }));
 
 // Body parser middleware
