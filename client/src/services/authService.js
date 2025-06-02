@@ -72,6 +72,8 @@ const authService = {  async sendVerificationEmail(userData) {
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Origin': window.location.origin
         },
         credentials: 'include',
         body: JSON.stringify(credentials),
