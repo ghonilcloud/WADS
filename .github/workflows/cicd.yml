@@ -60,8 +60,8 @@ jobs:
         run: |
           docker compose up -d
         env:
-          PORT: 3000
-          CONNECTION_URL: mongodb://e2425-wads-l4bcg2:motis6u2@localhost:27018/e2425-wads-l4bcg2?authSource=e2425-wads-l4bcg2
+          PORT: 3018
+          CONNECTION_URL: mongodb://e2425-wads-l4bcg2:motis6u2@localhost:27017/e2425-wads-l4bcg2?authSource=e2425-wads-l4bcg2
           EMAIL_USER: cottoneightservice@gmail.com
           EMAIL_PASSWORD: dcoe wiwm hrbz wwwe
           CLOUDINARY_CLOUD_NAME: dfe7uyntq
