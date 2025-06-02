@@ -14,7 +14,7 @@ const options = {
       }
     },    servers: [
       {
-        url: 'https://e2425-wads-l4bcg2-server.csbihub.id/api',
+        url: 'https://e2425-wads-l4bcg2-server.csbihub.id',
         description: 'Production server',
       },
       {
