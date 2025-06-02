@@ -3,10 +3,21 @@ const User = require('../models/user');
 
 const auth = async (req, res, next) => {
   try {
-    const token = req.header('Authorization').replace('Bearer ', '');
+    // Check Authorization header first
+    let token;
+    const authHeader = req.header('Authorization');
+    
+    if (authHeader) {
+      token = authHeader.replace('Bearer ', '');
+    } 
+    // If no Authorization header, check for token in cookies
+    else if (req.cookies && req.cookies.token) {
+      token = req.cookies.token;
+    }
+    
     if (!token) {
       return res.status(401).json({ message: 'Authorization token is required' });
-    }    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    }const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // First try to find user with token in tokens array
     let user = await User.findOne({ 
