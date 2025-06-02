@@ -1,4 +1,4 @@
-const API_URL = '/api/user';
+const API_URL = 'https://e2425-wads-l4bcg2-server.csbihub.id/api/user';
 
 const authService = {  async sendVerificationEmail(userData) {
     const response = await fetch(`${API_URL}/send-verification`, {
