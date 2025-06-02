@@ -213,4 +213,35 @@ const authService = {  async sendVerificationEmail(userData) {
   }
 };
 
+// Debug function to test CORS
+export async function testCorsEndpoint() {
+  try {
+    console.log('Testing CORS endpoint...');
+    const response = await fetch('https://e2425-wads-l4bcg2-server.csbihub.id/api/debug-cors', {
+      method: 'GET',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    });
+    
+    console.log('Debug response status:', response.status);
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Debug response data:', data);
+      return data;
+    } else {
+      console.error('Debug failed with status:', response.status);
+      const text = await response.text();
+      console.error('Error text:', text);
+      return null;
+    }
+  } catch (error) {
+    console.error('Debug test error:', error);
+    return null;
+  }
+}
+
 export default authService;

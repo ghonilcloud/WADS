@@ -26,22 +26,12 @@ app.use(express.json());
 
 // Define CORS options
 const corsOptions = {
-  origin: function(origin, callback) {
-    const allowedOrigins = process.env.NODE_ENV === 'production'
-      ? ['https://e2425-wads-l4bcg2-client.csbihub.id']
-      : ['http://localhost:5173', 'http://127.0.0.1:5173'];
-    
-    // Allow requests with no origin (like mobile apps, curl requests, etc)
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      console.log('CORS blocked origin:', origin);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: process.env.NODE_ENV === 'production'
+    ? 'https://e2425-wads-l4bcg2-client.csbihub.id'
+    : ['http://localhost:5173', 'http://127.0.0.1:5173'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept', 'DNT', 'User-Agent', 'If-Modified-Since', 'Cache-Control', 'Range'],
   exposedHeaders: ['Content-Length', 'X-Content-Type-Options'],
   maxAge: 86400,
   preflightContinue: false,
@@ -54,19 +44,43 @@ app.use(cors(corsOptions));
 // Add explicit OPTIONS handler for all routes
 app.options('*', cors(corsOptions));
 
+// Handle preflight OPTIONS requests explicitly
+app.options('*', (req, res) => {
+  // Set CORS headers
+  res.header('Access-Control-Allow-Origin', process.env.NODE_ENV === 'production' 
+    ? 'https://e2425-wads-l4bcg2-client.csbihub.id' 
+    : req.headers.origin);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Origin, X-Requested-With, Accept, DNT, User-Agent, If-Modified-Since, Cache-Control, Range');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Max-Age', '86400');
+  
+  // Respond with 204 No Content
+  res.status(204).end();
+});
+
+// Middleware to log incoming requests
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} [${req.method}] ${req.path} - Origin: ${req.headers.origin}`);
+  next();
+});
+
+// Enhanced CORS debug endpoint
 app.get('/api/debug-cors', (req, res) => {
   res.json({
     message: 'CORS debug info',
-    requestHeaders: {
-      origin: req.headers.origin,
-      host: req.headers.host,
-      referer: req.headers.referer
-    },
+    success: true,
+    requestHeaders: req.headers,
     corsConfig: {
       allowedOrigins: process.env.NODE_ENV === 'production'
         ? ['https://e2425-wads-l4bcg2-client.csbihub.id']
         : ['http://localhost:5173', 'http://127.0.0.1:5173'],
       environment: process.env.NODE_ENV || 'development'
+    },
+    serverInfo: {
+      nodeEnv: process.env.NODE_ENV,
+      trustProxy: app.get('trust proxy'),
+      port: PORT
     }
   });
 });
@@ -95,7 +109,7 @@ const PORT = process.env.PORT;
 //     saveUninitialized: false
 // }));
 
-app.set('trust proxy', true); 
+app.set('trust proxy', 1); // Trust first proxy
 
 // Serve Swagger documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
