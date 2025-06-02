@@ -27,12 +27,13 @@ const OAuthSignupCompletion = () => {
 
         try {
             const token = localStorage.getItem('temp_token'); // Using temp token from OAuth
-            const response = await fetch('http://localhost:3000/api/user/complete-oauth-signup', {
+            const response = await fetch('/api/user/complete-oauth-signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
+                credentials: 'include',
                 body: JSON.stringify(formData)
             });
 

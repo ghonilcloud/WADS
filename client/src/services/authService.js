@@ -1,12 +1,12 @@
 const API_URL = '/api/user';
 
-const authService = {
-  async sendVerificationEmail(userData) {
+const authService = {  async sendVerificationEmail(userData) {
     const response = await fetch(`${API_URL}/send-verification`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify(userData),
     });
 
@@ -18,13 +18,13 @@ const authService = {
 
     return data;
   },
-
   async verifyOTP(email, otp) {
     const response = await fetch(`${API_URL}/verify-otp`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify({ email, otp }),
     });
 
@@ -40,7 +40,6 @@ const authService = {
 
     return data;
   },
-
   async registerServiceAgent(agentData) {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -53,6 +52,7 @@ const authService = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
+      credentials: 'include',
       body: JSON.stringify(agentData),
     });
 
@@ -64,13 +64,13 @@ const authService = {
 
     return data;
   },
-
   async login(credentials) {
     const response = await fetch(`${API_URL}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify(credentials),
     });
 
@@ -86,7 +86,6 @@ const authService = {
 
     return data;
   },
-
   async logout() {
     const token = localStorage.getItem('token');
     if (!token) return;
@@ -98,6 +97,7 @@ const authService = {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
       });
 
       if (!response.ok) {
@@ -110,7 +110,6 @@ const authService = {
       localStorage.removeItem('token');
     }
   },
-
   async getCurrentUser() {
     const token = localStorage.getItem('token');
     if (!token) return null;
@@ -119,7 +118,8 @@ const authService = {
       const response = await fetch(`${API_URL}/profile`, {
         headers: {
           'Authorization': `Bearer ${token}`
-        }
+        },
+        credentials: 'include'
       });
 
       if (!response.ok) {
@@ -133,7 +133,6 @@ const authService = {
       return null;
     }
   },
-
   async getUserById(userId) {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -149,7 +148,8 @@ const authService = {
     const response = await fetch(`${API_URL}/${userIdStr}`, {
       headers: {
         'Authorization': `Bearer ${token}`
-      }
+      },
+      credentials: 'include'
     });
 
     const data = await response.json();

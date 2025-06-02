@@ -19,7 +19,7 @@ const OAuthCallback = () => {
             }            try {
                 // Store the token temporarily
                 localStorage.setItem('token', token);                // Fetch user data to determine role
-                const response = await fetch('http://localhost:3000/api/user/profile', {
+                const response = await fetch('/api/user/profile', {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -61,12 +61,13 @@ const OAuthCallback = () => {
         e.preventDefault();
         try {
             const token = searchParams.get('token');
-            const response = await fetch('http://localhost:3000/api/user/complete-signup', {
+            const response = await fetch('/api/user/complete-signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
+                credentials: 'include',
                 body: JSON.stringify({ phone })
             });
 
