@@ -24,8 +24,15 @@ dotenv.config();
 app.use(express.json());
 
 app.use(cors({
-    origin: "*",
-    credentials: false,
+    origin: process.env.NODE_ENV === 'production' 
+        ? ['https://e2425-wads-l4bcg2-client.csbihub.id'] 
+        : ['http://localhost:5173', 'http://127.0.0.1:5173'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
+    exposedHeaders: ['Content-Length', 'X-Content-Type-Options'],
+    maxAge: 86400,
+    optionsSuccessStatus: 204
 }));
 
 // Initialize Passport and CORS

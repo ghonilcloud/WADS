@@ -63,22 +63,35 @@ const authService = {  async sendVerificationEmail(userData) {
     }
 
     return data;
-  },
-  async login(credentials) {
-    const response = await fetch(`${API_URL}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(credentials),
-    });
+  },  async login(credentials) {
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(credentials),
+      });
 
-    const data = await response.json();
+      // Check if response is OK before trying to parse JSON
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Login response error:', response.status, errorText);
+        try {
+          const errorData = JSON.parse(errorText);
+          throw new Error(errorData.message || 'Login failed');
+        } catch (e) {
+          throw new Error(`Login failed with status ${response.status}: ${errorText.substring(0, 100)}`);
+        }
+      }
 
-    if (!response.ok) {
-      throw new Error(data.message || 'Login failed');
-    }
+      const data = await response.json();
+      
+      if (!data || !data.user) {
+        console.error('Invalid login response data:', data);
+        throw new Error('Invalid response from server');
+      }
 
     if (data.token) {
       localStorage.setItem('token', data.token);

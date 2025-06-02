@@ -155,5 +155,18 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user;
 };
 
+// Define how the user object should be converted to JSON
+userSchema.methods.toJSON = function() {
+  const user = this;
+  const userObject = user.toObject();
+  
+  // Remove sensitive information
+  delete userObject.password;
+  delete userObject.tokens;
+  delete userObject.otp;
+  
+  return userObject;
+};
+
 const User = mongoose.model('User', userSchema);
 module.exports = User;
