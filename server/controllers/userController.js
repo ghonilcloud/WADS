@@ -131,9 +131,10 @@ const verifyOTP = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findByCredentials({email, password});
+    // Pass email and password as separate parameters, not as an object
+    const user = await User.findByCredentials(email, password);
     const token = await user.generateAuthToken();
-    res.json({ 
+    res.send({ 
       user, 
       token,
       message: `Welcome back ${user.firstName}! Login successful.`
