@@ -20,7 +20,6 @@ const oauthRoutes = require('./routes/oauthRoutes');
 
 // const auth = require('./middleware/auth');
 const dotenv = require('dotenv');
-const { faHourglassEnd } = require('@fortawesome/free-solid-svg-icons');
 dotenv.config();
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
