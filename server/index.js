@@ -23,17 +23,53 @@ const app = express();
 dotenv.config();
 app.use(express.json());
 
-app.use(cors({
-    origin: process.env.NODE_ENV === 'production' 
-        ? 'https://e2425-wads-l4bcg2-client.csbihub.id' 
+
+// Define CORS options
+const corsOptions = {
+  origin: function(origin, callback) {
+    const allowedOrigins = process.env.NODE_ENV === 'production'
+      ? ['https://e2425-wads-l4bcg2-client.csbihub.id']
+      : ['http://localhost:5173', 'http://127.0.0.1:5173'];
+    
+    // Allow requests with no origin (like mobile apps, curl requests, etc)
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('CORS blocked origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
+  exposedHeaders: ['Content-Length', 'X-Content-Type-Options'],
+  maxAge: 86400,
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
+
+// Apply CORS to all routes
+app.use(cors(corsOptions));
+
+// Add explicit OPTIONS handler for all routes
+app.options('*', cors(corsOptions));
+
+app.get('/api/debug-cors', (req, res) => {
+  res.json({
+    message: 'CORS debug info',
+    requestHeaders: {
+      origin: req.headers.origin,
+      host: req.headers.host,
+      referer: req.headers.referer
+    },
+    corsConfig: {
+      allowedOrigins: process.env.NODE_ENV === 'production'
+        ? ['https://e2425-wads-l4bcg2-client.csbihub.id']
         : ['http://localhost:5173', 'http://127.0.0.1:5173'],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
-    exposedHeaders: ['Content-Length', 'X-Content-Type-Options'],
-    maxAge: 86400,
-    optionsSuccessStatus: 204
-}));
+      environment: process.env.NODE_ENV || 'development'
+    }
+  });
+});
 
 // app.use((req, res, next) => {
 //     res.header('Access-Control-Allow-Origin', "https://e2425-wads-l4bcg2-client.csbihub.id");
