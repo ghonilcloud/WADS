@@ -35,10 +35,6 @@ app.use(cors({
     optionsSuccessStatus: 204
 }));
 
-add.options('/api/user', cors({
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH']
-}));
-
 // Initialize Passport and CORS
 app.use(passport.initialize());
 app.use(cookieParser());
