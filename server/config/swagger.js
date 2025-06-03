@@ -14,11 +14,12 @@ const options = {
       }
     },    servers: [
       {
-        url: 'https://e2425-wads-l4bcg2-server.csbihub.id',
+        // Use path instead of full URL
+        url: '/api',
         description: 'Production server',
       },
       {
-        url: 'http://localhost:3018/api',
+        url: '/api',
         description: 'Development server',
       },
     ],
