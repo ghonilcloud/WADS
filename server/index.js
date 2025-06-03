@@ -28,9 +28,6 @@ const corsOptions = {
 // 1. CORS middleware first
 app.use(cors(corsOptions));
 
-// 2. Handle all OPTIONS requests before any other middleware or routes
-app.options('*', cors(corsOptions));
-
 // // Enhanced debugging for route registration
 // const originalUse = app.use;
 // app.use = function(path, ...handlers) {
@@ -44,17 +41,17 @@ app.options('*', cors(corsOptions));
 //   return originalUse.call(this, path, ...handlers);
 // };
 
-// Import debug middleware
-const debugRoutes = require('./middleware/routeDebug');
+// // Import debug middleware
+// const debugRoutes = require('./middleware/routeDebug');
 
-// Apply the debug middleware to all requests
-app.use(debugRoutes);
+// // Apply the debug middleware to all requests
+// app.use(debugRoutes);
 
 // Import Swagger configuration
-const { specs, swaggerUi, swaggerSetup } = require('./config/swagger');
+// const { specs, swaggerUi, swaggerSetup } = require('./config/swagger');
 
 // Initialize OAuth configuration
-require('./config/oauth');
+// require('./config/oauth');
 
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
@@ -67,14 +64,14 @@ app.use(session({
     saveUninitialized: false
 }));
 
-app.set('trust proxy', true); 
+// app.set('trust proxy', true); 
 
-// Serve Swagger documentation
-app.get('/api-docs/swagger.json', (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
-  res.send(specs);
-});
-app.use('/api-docs', swaggerUi.serve, swaggerSetup);
+// // Serve Swagger documentation
+// app.get('/api-docs/swagger.json', (req, res) => {
+//   res.setHeader('Content-Type', 'application/json');
+//   res.send(specs);
+// });
+// app.use('/api-docs', swaggerUi.serve, swaggerSetup);
 
 // Routes
 app.use('/api/user', userRoutes);
