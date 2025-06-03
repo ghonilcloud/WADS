@@ -1,11 +1,35 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
+
+dotenv.config();
+
+const cors = require('cors');
+
+const app = express();
+
+const corsOptions = {
+  origin: 'https://e2425-wads-l4bcg2-client.csbihub.id',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true
+};
+
+// 1. CORS middleware first
+app.use(cors(corsOptions));
+
+// 2. Handle all OPTIONS requests before any other middleware or routes
+app.options('*', cors(corsOptions));
+
+// Add this before your routes to detect problematic routes
+const originalUse = app.use;
+app.use = function(path, ...handlers) {
+  console.log(`Registering route: ${path}`);
+  return originalUse.call(this, path, ...handlers);
+};
 
 // Import Swagger configuration
 const { specs, swaggerUi } = require('./config/swagger');
@@ -18,26 +42,6 @@ const ticketRoutes = require('./routes/ticketRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
 const oauthRoutes = require('./routes/oauthRoutes');
-
-const app = express();
-dotenv.config();
-app.use(express.json());
-
-app.use(cors({
-    origin: process.env.NODE_ENV === 'production' 
-        ? ['https://e2425-wads-l4bcg2-client.csbihub.id'] 
-        : ['http://localhost:5173', 'http://127.0.0.1:5173'],
-    credentials: false,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
-    exposedHeaders: ['Content-Length', 'X-Content-Type-Options'],
-    maxAge: 86400,
-    optionsSuccessStatus: 204
-}));
-
-// Initialize Passport and CORS
-app.use(passport.initialize());
-app.use(cookieParser());
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT;

@@ -24,11 +24,11 @@ router.get('/google/callback',
             await req.user.save();            
             
             // Use environment variable for client URL
-            const clientURL = process.env.CLIENT_URL || 'https://e2425-wads-l4bcg2-client.csbihub.id';
+            const clientURL = process.env.FRONTEND_URL;
             res.redirect(`${clientURL}/oauth-callback?token=${token}`);
         } catch (error) {
             console.error('OAuth callback error:', error);
-            const clientURL = process.env.CLIENT_URL || 'https://e2425-wads-l4bcg2-client.csbihub.id';
+            const clientURL = process.env.FRONTEND_URL;
             res.redirect(`${clientURL}/login?error=auth_failed`);
         }
     }
