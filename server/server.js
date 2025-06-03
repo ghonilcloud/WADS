@@ -25,8 +25,6 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.options('*', cors(corsOptions));
-
 app.use(session({
     secret: process.env.JWT_SECRET,
     resave: false,
