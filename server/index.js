@@ -26,18 +26,18 @@ app.use(cors(corsOptions));
 // 2. Handle all OPTIONS requests before any other middleware or routes
 app.options('*', cors(corsOptions));
 
-// Enhanced debugging for route registration
-const originalUse = app.use;
-app.use = function(path, ...handlers) {
-  console.log(`Registering route: ${path}`, typeof path, path instanceof RegExp ? 'RegExp' : '');
+// // Enhanced debugging for route registration
+// const originalUse = app.use;
+// app.use = function(path, ...handlers) {
+//   console.log(`Registering route: ${path}`, typeof path, path instanceof RegExp ? 'RegExp' : '');
   
-  // Check if path contains a URL with protocol
-  if (typeof path === 'string' && (path.includes('http://') || path.includes('https://'))) {
-    console.error(`⚠️ WARNING: Route path contains a full URL which may cause path-to-regexp errors: ${path}`);
-  }
+//   // Check if path contains a URL with protocol
+//   if (typeof path === 'string' && (path.includes('http://') || path.includes('https://'))) {
+//     console.error(`⚠️ WARNING: Route path contains a full URL which may cause path-to-regexp errors: ${path}`);
+//   }
   
-  return originalUse.call(this, path, ...handlers);
-};
+//   return originalUse.call(this, path, ...handlers);
+// };
 
 // Import debug middleware
 const debugRoutes = require('./middleware/routeDebug');
@@ -55,7 +55,7 @@ const userRoutes = require('./routes/userRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
-const oauthRoutes = require('./routes/oauthRoutes');
+// const oauthRoutes = require('./routes/oauthRoutes');
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT;
@@ -81,7 +81,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/chats', chatRoutes);
 app.use('/api/analytics', analyticsRoutes);
-app.use('/auth', oauthRoutes);
+// app.use('/auth', oauthRoutes);
 
 mongoose.set('strictQuery', true);
 
