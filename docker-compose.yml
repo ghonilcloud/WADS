@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   backend:
-    image: onealwaseem/finalproject-backend:latest
+    image: onealwaseem/thegirlypoppers-backend:latest
     restart: always
     environment:
       PORT:  ${PORT}
@@ -22,7 +22,7 @@ services:
       - "3018:3018"
 
   frontend:
-    image: onealwaseem/finalproject-frontend:latest
+    image: onealwaseem/thegirlypoppers-frontend:latest
     restart: always
     depends_on:
       - backend
