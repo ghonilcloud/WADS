@@ -4,7 +4,6 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
-const path = require('path');
 
 dotenv.config();
 
@@ -24,7 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(session({
-    secret: process.env.JWT_SECRET || 'default_secret',
+    secret: process.env.JWT_SECRET,
     resave: false,
     saveUninitialized: false
 }));
