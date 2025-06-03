@@ -91,23 +91,21 @@
 
 // new index.js
 
-const express = require('express');
-const mongoose = require('mongoose');
-const passport = require('passport');
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
-const path = require('path');
-const userRoutes = require('./routes/userRoutes');
-const ticketRoutes = require('./routes/ticketRoutes');
-const chatRoutes = require('./routes/chatRoutes');
-const analyticsRoutes = require('./routes/analyticsRoutes');
+import express, { json } from 'express';
+import mongoose from 'mongoose';
+import passport from 'passport';
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import { config } from 'dotenv';
+import cors from 'cors';
+import userRoutes from './routes/userRoutes';
+import ticketRoutes from './routes/ticketRoutes';
+import chatRoutes from './routes/chatRoutes';
+import analyticsRoutes from './routes/analyticsRoutes';
 // const oauthRoutes = require('./routes/oauthRoutes');
 
-dotenv.config();
-
-const cors = require('cors');
+// config();
 
 const app = express();
 
@@ -121,7 +119,7 @@ const corsOptions = {
 // 1. CORS middleware first
 app.use(cors(corsOptions));
 
-app.use(express.json());
+app.use(json());
 
 // const CONNECTION_URL = process.env.CONNECTION_URL;
 // const PORT = process.env.PORT;
