@@ -48,14 +48,10 @@ app.options('*', cors(corsOptions));
 // // Import Swagger configuration
 // const { specs, swaggerUi, swaggerSetup } = require('./config/swagger');
 
-// // Initialize OAuth configuration
-// require('./config/oauth');
-
 const userRoutes = require('./routes/userRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
-// const oauthRoutes = require('./routes/oauthRoutes');
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT;
@@ -81,7 +77,6 @@ app.use('/api/user', userRoutes);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/chats', chatRoutes);
 app.use('/api/analytics', analyticsRoutes);
-// app.use('/auth', oauthRoutes);
 
 mongoose.set('strictQuery', true);
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from "../../components/header-signup";
-import OAuthLoginButton from '../../components/OAuthLoginButton';
 import "./signup.css";
 
 const SignupChoice = () => {

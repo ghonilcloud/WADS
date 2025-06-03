@@ -293,10 +293,6 @@ const options = {
         name: 'Analytics',
         description: 'Analytics and reporting'
       },
-      {
-        name: 'OAuth',
-        description: 'OAuth authentication'
-      }
     ]
   },  apis: [
     './routes/*.js',
