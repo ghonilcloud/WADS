@@ -16,7 +16,7 @@ const corsOptions = {
     'https://e2425-wads-l4bcg2-client.csbihub.id',
     'http://localhost:3000'
   ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
@@ -24,6 +24,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.options('*', cors(corsOptions));
 
 app.use(session({
     secret: process.env.JWT_SECRET,
