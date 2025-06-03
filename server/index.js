@@ -32,7 +32,7 @@ app.use = function(path, ...handlers) {
 };
 
 // Import Swagger configuration
-const { specs, swaggerUi } = require('./config/swagger');
+const { specs, swaggerUi, swaggerSetup } = require('./config/swagger');
 
 // Initialize OAuth configuration
 require('./config/oauth');
@@ -56,7 +56,11 @@ app.use(session({
 app.set('trust proxy', true); 
 
 // Serve Swagger documentation
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
+app.get('/api-docs/swagger.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(specs);
+});
+app.use('/api-docs', swaggerUi.serve, swaggerSetup);
 
 // Routes
 app.use('/api/user', userRoutes);

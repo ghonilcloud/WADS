@@ -12,17 +12,13 @@ const options = {
         name: 'API Support',
         email: 'support@ticketsystem.com'
       }
-    },    servers: [
-      {
-        // Use path instead of full URL
-        url: '/api',
-        description: 'Production server',
-      },
-      {
-        url: '/api',
-        description: 'Development server',
-      },
-    ],
+    },
+    // Using host, basePath and schemes instead of servers to avoid URL parsing issues
+    host: process.env.NODE_ENV === 'production' 
+      ? 'e2425-wads-l4bcg2-server.csbihub.id'
+      : 'localhost:3018',
+    basePath: '/api',
+    schemes: ['https', 'http'],
     components: {
       securitySchemes: {
         bearerAuth: {
@@ -311,4 +307,18 @@ const options = {
 
 const specs = swaggerJsdoc(options);
 
-module.exports = { specs, swaggerUi };
+// Create a wrapper for the Swagger UI to safely handle URLs
+const createSwaggerSetup = (specs) => {
+  return swaggerUi.setup(specs, {
+    explorer: true,
+    swaggerOptions: {
+      url: '/api-docs/swagger.json' // Use a relative path
+    }
+  });
+};
+
+module.exports = { 
+  specs, 
+  swaggerUi,
+  swaggerSetup: createSwaggerSetup(specs)
+};
