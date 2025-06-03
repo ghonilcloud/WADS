@@ -85,13 +85,6 @@ const Login = () => {
             Don't have an account? <Link to="/signup">Sign up</Link>
           </p>
         </form>
-        
-        <div className="oauth-section">
-          <div className="divider">
-            <span>OR</span>
-          </div>
-          <OAuthLoginButton />
-        </div>
       </div>
     </div>
   );

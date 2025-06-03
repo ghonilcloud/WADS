@@ -98,30 +98,6 @@ const authService = {
       throw new Error(error.response?.data?.message || 'Failed to get user');
     }
   },
-
-  async handleOAuthCallback(code, state) {
-    try {
-      const response = await api.post('/auth/oauth/callback', { code, state });
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-      }
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.message || 'OAuth authentication failed');
-    }
-  },
-
-  async completeOAuthSignup(userData) {
-    try {
-      const response = await api.post('/auth/oauth/complete-signup', userData);
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-      }
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.message || 'Failed to complete OAuth signup');
-    }
-  }
 };
 
 export default authService;

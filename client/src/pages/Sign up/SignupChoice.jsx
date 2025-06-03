@@ -23,10 +23,6 @@ const SignupChoice = () => {
                     >
                         Sign up with Email
                     </button>
-                    <div className="divider">
-                        <span>OR</span>
-                    </div>
-                    <OAuthLoginButton isSignup={true} />
                 </div>
             </div>
         </div>
