@@ -26,13 +26,6 @@ app.use(cors(corsOptions));
 // 2. Handle all OPTIONS requests before any other middleware or routes
 app.options('*', cors(corsOptions));
 
-const pathToRegexp = require('path-to-regexp');
-const orig = pathToRegexp;
-require('path-to-regexp').default = function(pattern, ...args) {
-  console.log('path-to-regexp pattern:', pattern);
-  return orig(pattern, ...args);
-};
-
 // // Enhanced debugging for route registration
 // const originalUse = app.use;
 // app.use = function(path, ...handlers) {
