@@ -118,15 +118,18 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
-const CONNECTION_URL = process.env.CONNECTION_URL;
-const PORT = process.env.PORT;
+// 1. CORS middleware first
+app.use(cors(corsOptions));
 
-// Middleware setup
-app.use(session({
-    secret: process.env.JWT_SECRET,
-    resave: false,
-    saveUninitialized: false
-}));
+// const CONNECTION_URL = process.env.CONNECTION_URL;
+// const PORT = process.env.PORT;
+
+// // Middleware setup
+// app.use(session({
+//     secret: process.env.JWT_SECRET,
+//     resave: false,
+//     saveUninitialized: false
+// }));
 
 // Routes
 app.use('/api/user', userRoutes);
