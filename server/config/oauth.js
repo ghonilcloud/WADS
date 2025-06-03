@@ -26,11 +26,10 @@ passport.deserializeUser(async (id, done) => {
 });
 
 // Configure Google Strategy
-passport.use(new GoogleStrategy({    clientID: process.env.GOOGLE_CLIENT_ID.trim(),
+passport.use(new GoogleStrategy({    
+    clientID: process.env.GOOGLE_CLIENT_ID.trim(),
     clientSecret: process.env.GOOGLE_CLIENT_SECRET.trim(),
-    callbackURL: process.env.NODE_ENV === 'production' 
-        ? "https://e2425-wads-l4bcg2-server.csbihub.id/api/auth/google/callback"
-        : "http://localhost:3018/api/auth/google/callback",
+    callbackURL: "/api/auth/google/callback",  // Use relative path to avoid path-to-regexp issues
     proxy: true
 }, async (accessToken, refreshToken, profile, done) => {
     try {

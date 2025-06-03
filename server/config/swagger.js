@@ -13,12 +13,13 @@ const options = {
         email: 'support@ticketsystem.com'
       }
     },
-    // Using host, basePath and schemes instead of servers to avoid URL parsing issues
-    host: process.env.NODE_ENV === 'production' 
-      ? 'e2425-wads-l4bcg2-server.csbihub.id'
-      : 'localhost:3018',
-    basePath: '/api',
-    schemes: ['https', 'http'],
+    // Safe configuration that doesn't use full URLs
+    servers: [
+      {
+        url: '/api',
+        description: 'API Server'
+      }
+    ],
     components: {
       securitySchemes: {
         bearerAuth: {
