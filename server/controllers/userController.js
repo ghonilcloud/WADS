@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const Ticket = require('../models/ticket');
+// const Ticket = require('../models/ticket');
 const { userSendMail } = require('./otpController');
 const cloudinary = require('../config/cloudinary');
 const bcrypt = require('bcryptjs');
