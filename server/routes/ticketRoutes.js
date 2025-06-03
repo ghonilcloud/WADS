@@ -43,7 +43,7 @@ router.get('/all', auth, getAllTickets);
 
 /**
  * @swagger
- * /api/tickets:
+ * /api/tickets/list:
  *   get:
  *     tags:
  *       - Tickets
@@ -76,11 +76,11 @@ router.get('/all', auth, getAllTickets);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.get('/', auth, getUserTickets);
+router.get('/list', auth, getUserTickets);
 
 /**
  * @swagger
- * /api/tickets:
+ * /api/tickets/create:
  *   post:
  *     tags:
  *       - Tickets
@@ -152,11 +152,11 @@ router.get('/', auth, getUserTickets);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.post('/', auth, upload.array('attachments', 5), createTicket);
+router.post('/create', auth, upload.array('attachments', 5), createTicket);
 
 /**
  * @swagger
- * /api/tickets/{ticketId}:
+ * /api/tickets/ticket/{ticketId}:
  *   patch:
  *     tags:
  *       - Tickets
@@ -229,11 +229,11 @@ router.post('/', auth, upload.array('attachments', 5), createTicket);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.patch('/:ticketId', auth, upload.array('attachments', 5), updateTicket);
+router.patch('/ticket/:ticketId', auth, upload.array('attachments', 5), updateTicket);
 
 /**
  * @swagger
- * /api/tickets/{ticketId}:
+ * /api/tickets/ticket/{ticketId}:
  *   delete:
  *     tags:
  *       - Tickets
@@ -278,11 +278,11 @@ router.patch('/:ticketId', auth, upload.array('attachments', 5), updateTicket);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.delete('/:ticketId', auth, deleteTicket);
+router.delete('/ticket/:ticketId', auth, deleteTicket);
 
 /**
  * @swagger
- * /api/tickets/{ticketId}:
+ * /api/tickets/ticket/{ticketId}:
  *   get:
  *     tags:
  *       - Tickets
@@ -326,6 +326,6 @@ router.delete('/:ticketId', auth, deleteTicket);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.get('/:ticketId', auth, getTicketDetails);
+router.get('/ticket/:ticketId', auth, getTicketDetails);
 
 module.exports = router;

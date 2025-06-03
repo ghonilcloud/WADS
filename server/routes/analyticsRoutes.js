@@ -14,6 +14,6 @@ const isAdmin = (req, res, next) => {
     next();
 };
 
-router.get('/', auth, isAdmin, getAnalytics);
+router.get('/dashboard', auth, isAdmin, getAnalytics);
 
 module.exports = router;

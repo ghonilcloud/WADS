@@ -15,7 +15,8 @@ const app = express();
 const corsOptions = {
   origin: 'https://e2425-wads-l4bcg2-client.csbihub.id',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials: true
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 // 1. CORS middleware first
@@ -67,7 +68,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/chats', chatRoutes);
 app.use('/api/analytics', analyticsRoutes);
-app.use('/api/auth', oauthRoutes);
+app.use('/auth', oauthRoutes);
 
 mongoose.set('strictQuery', true);
 
