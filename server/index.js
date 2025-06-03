@@ -26,18 +26,18 @@ app.use(cors(corsOptions));
 // 2. Handle all OPTIONS requests before any other middleware or routes
 app.options('*', cors(corsOptions));
 
-// // Enhanced debugging for route registration
-// const originalUse = app.use;
-// app.use = function(path, ...handlers) {
-//   console.log(`Registering route: ${path}`, typeof path, path instanceof RegExp ? 'RegExp' : '');
+// Enhanced debugging for route registration
+const originalUse = app.use;
+app.use = function(path, ...handlers) {
+  console.log(`Registering route: ${path}`, typeof path, path instanceof RegExp ? 'RegExp' : '');
   
-//   // Check if path contains a URL with protocol
-//   if (typeof path === 'string' && (path.includes('http://') || path.includes('https://'))) {
-//     console.error(`⚠️ WARNING: Route path contains a full URL which may cause path-to-regexp errors: ${path}`);
-//   }
+  // Check if path contains a URL with protocol
+  if (typeof path === 'string' && (path.includes('http://') || path.includes('https://'))) {
+    console.error(`⚠️ WARNING: Route path contains a full URL which may cause path-to-regexp errors: ${path}`);
+  }
   
-//   return originalUse.call(this, path, ...handlers);
-// };
+  return originalUse.call(this, path, ...handlers);
+};
 
 // // Import debug middleware
 // const debugRoutes = require('./middleware/routeDebug');
