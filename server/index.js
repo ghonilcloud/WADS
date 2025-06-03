@@ -134,8 +134,8 @@ app.use(cors(corsOptions));
 // Routes
 app.use('/api/user', userRoutes);
 app.use('/api/tickets', ticketRoutes);
-app.use('/api/chats', chatRoutes);
-app.use('/api/analytics', analyticsRoutes);
+// app.use('/api/chats', chatRoutes);
+// app.use('/api/analytics', analyticsRoutes);
 // app.use('/auth', oauthRoutes);
 
 // mongoose.set('strictQuery', true);
