@@ -45,8 +45,8 @@ app.use = function(path, ...handlers) {
 // // Apply the debug middleware to all requests
 // app.use(debugRoutes);
 
-// // Import Swagger configuration
-// const { specs, swaggerUi, swaggerSetup } = require('./config/swagger');
+// Import Swagger configuration
+const { specs, swaggerUi, swaggerSetup } = require('./config/swagger');
 
 const userRoutes = require('./routes/userRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
@@ -65,12 +65,12 @@ app.use(session({
 
 app.set('trust proxy', true); 
 
-// // Serve Swagger documentation
-// app.get('/api-docs/swagger.json', (req, res) => {
-//   res.setHeader('Content-Type', 'application/json');
-//   res.send(specs);
-// });
-// app.use('/api-docs', swaggerUi.serve, swaggerSetup);
+// Serve Swagger documentation
+app.get('/api-docs/swagger.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(specs);
+});
+app.use('/api-docs', swaggerUi.serve, swaggerSetup);
 
 // Routes
 app.use('/api/user', userRoutes);
