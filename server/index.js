@@ -6,6 +6,11 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const path = require('path');
+const userRoutes = require('./routes/userRoutes');
+const ticketRoutes = require('./routes/ticketRoutes');
+const chatRoutes = require('./routes/chatRoutes');
+const analyticsRoutes = require('./routes/analyticsRoutes');
+// const oauthRoutes = require('./routes/oauthRoutes');
 
 dotenv.config();
 
@@ -51,11 +56,6 @@ const { specs, swaggerUi, swaggerSetup } = require('./config/swagger');
 // Initialize OAuth configuration
 require('./config/oauth');
 
-const userRoutes = require('./routes/userRoutes');
-const ticketRoutes = require('./routes/ticketRoutes');
-const chatRoutes = require('./routes/chatRoutes');
-const analyticsRoutes = require('./routes/analyticsRoutes');
-// const oauthRoutes = require('./routes/oauthRoutes');
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT;
