@@ -1,7 +1,7 @@
 const User = require('../models/user');
 // const Ticket = require('../models/ticket');
 const { userSendMail } = require('./otpController');
-// const cloudinary = require('../config/cloudinary');
+const cloudinary = require('../config/cloudinary');
 const bcrypt = require('bcryptjs');
 
 // Store OTPs in memory (in production, use Redis or similar)
@@ -145,6 +145,73 @@ const login = async (req, res) => {
   }
 };
 
+const getProfile = async (req, res) => {
+  res.json(req.user);
+};
+
+const updateProfile = async (req, res) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdates = ['firstName', 'lastName', 'phone', 'address'];
+
+  try {
+    updates.forEach((update) => {
+      if (allowedUpdates.includes(update)) {
+        req.user[update] = req.body[update];
+      }
+    });
+
+    await req.user.save();
+    res.json(req.user);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+const uploadProfilePicture = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No image file provided' });
+    }
+
+    // Convert buffer to base64
+    const base64String = req.file.buffer.toString('base64');
+    const dataURI = `data:${req.file.mimetype};base64,${base64String}`;
+
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(dataURI, {
+      folder: 'profile_pictures',
+      resource_type: 'auto'
+    });
+
+    // Delete old image if exists
+    if (req.user.profilePicture?.public_id) {
+      try {
+        await cloudinary.uploader.destroy(req.user.profilePicture.public_id);
+      } catch (error) {
+        console.error('Error deleting old image:', error);
+      }
+    }
+
+    // Update user profile picture
+    req.user.profilePicture = {
+      public_id: result.public_id,
+      url: result.secure_url
+    };
+    await req.user.save();
+
+    res.json({ 
+      profilePicture: req.user.profilePicture,
+      message: 'Profile picture updated successfully' 
+    });
+  } catch (error) {
+    console.error('Error uploading profile picture:', error);
+    res.status(500).json({ 
+      message: 'Failed to upload profile picture', 
+      error: error.message 
+    });
+  }
+};
+
 const logout = async (req, res) => {
   try {
     req.user.tokens = req.user.tokens.filter(token => token.token !== req.token);
@@ -161,4 +228,7 @@ module.exports = {
   logout,
   verifyOTP,
   sendVerification,
+  getProfile,
+  updateProfile,
+  uploadProfilePicture,
 };
