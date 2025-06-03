@@ -121,6 +121,8 @@ const corsOptions = {
 // 1. CORS middleware first
 app.use(cors(corsOptions));
 
+app.use(express.json());
+
 // const CONNECTION_URL = process.env.CONNECTION_URL;
 // const PORT = process.env.PORT;
 
@@ -132,8 +134,8 @@ app.use(cors(corsOptions));
 // }));
 
 // Routes
-app.use('/api/user', userRoutes);
-app.use('/api/tickets', ticketRoutes);
+// app.use('/api/user', userRoutes);
+// app.use('/api/tickets', ticketRoutes);
 // app.use('/api/chats', chatRoutes);
 // app.use('/api/analytics', analyticsRoutes);
 // app.use('/auth', oauthRoutes);
