@@ -12,7 +12,7 @@ const cors = require('cors');
 const app = express();
 
 const corsOptions = {
-  origin: '*',
+  origin: 'https://e2425-wads-l4bcg2-client.csbihub.id',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
