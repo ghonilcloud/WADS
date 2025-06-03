@@ -107,33 +107,6 @@ form input {
   text-decoration: underline;
 }
 
-/* Google Login Button Styles */
-.google-login-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 0.6rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-  color: #757575;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.google-login-button:hover {
-  background-color: #f1f1f1;
-}
-
-.google-login-button:disabled {
-  background-color: #e0e0e0;
-  cursor: not-allowed;
-}
-
 /* Separator Line */
 .separator {
   display: flex;
@@ -155,12 +128,6 @@ form input {
   color: #68423d;
 }
 
-/* OAuth Section Styles */
-.oauth-section {
-  margin-top: 20px;
-  width: 100%;
-}
-
 .divider {
   display: flex;
   align-items: center;
@@ -179,10 +146,4 @@ form input {
   padding: 0 10px;
   color: #666;
   font-size: 14px;
-}
-
-.oauth-login-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
 }

@@ -120,21 +120,6 @@
     box-sizing: border-box;
   }  
   
-  button,
-  .submit-button,
-  .google-login-button {
-    background-color: white;
-    border: 2px solid #68423d;
-    border-radius: 8px;
-    padding: 0.6rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-    color: black;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
   button:hover {
     background-color: #fae0cb;
   }
@@ -254,44 +239,6 @@
     .otp-icon {
       font-size: 2.5rem;
     }
-  }
-
-  /* Google authentication styles */
-  .google-email {
-    background-color: #f1f8e9;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-    color: #33691e;
-  }
-
-  /* Google Login Button Styles */
-  .google-login-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 0.6rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-    color: #757575;
-    margin: 0 auto 15px auto;
-    width: 80%;
-    box-sizing: border-box;
-  }
-
-  .google-login-button:hover {
-    background-color: #f1f1f1;
-  }
-
-  .google-login-button:disabled {
-    background-color: #e0e0e0;
-    cursor: not-allowed;
   }
 
   .submit-button:hover {

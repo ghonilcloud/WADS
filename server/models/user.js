@@ -44,11 +44,9 @@ const userSchema = new mongoose.Schema({
     enum: ['customer', 'service_agent', 'admin'],
     default: 'customer'
   },
-  address: addressSchema,  password: {
+  address: addressSchema,  
+  password: {
     type: String,
-    required: function() {
-      return !this.googleId; // Password is required only if not using Google OAuth
-    },
     minlength: 7,
     trim: true
   },
@@ -70,18 +68,13 @@ const userSchema = new mongoose.Schema({
     code: String,
     expiresAt: Date
   },
-  googleId: {
-    type: String,
-    sparse: true,
-    unique: true
-  },
   lastLogin: {
     type: Date,
     default: Date.now
   },
   authProvider: {
     type: String,
-    enum: ['local', 'google'],
+    enum: ['local'],
     default: 'local'
   }
 }, {

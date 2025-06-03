@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from "../../components/header-signup";
-import OAuthLoginButton from '../../components/OAuthLoginButton';
 import "./signup.css";
 
 const SignupChoice = () => {
@@ -23,10 +22,6 @@ const SignupChoice = () => {
                     >
                         Sign up with Email
                     </button>
-                    <div className="divider">
-                        <span>OR</span>
-                    </div>
-                    <OAuthLoginButton isSignup={true} />
                 </div>
             </div>
         </div>
