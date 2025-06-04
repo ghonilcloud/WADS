@@ -356,7 +356,7 @@ const TicketDetailAgent = () => {
                         <>
                           {customerData.user.address.street}<br />
                           {customerData.user.address.city && `${customerData.user.address.city}, `}
-                          {customerData.user.address.state} {customerData.user.address.zipCode}<br />
+                          {customerData.user.address.state} {customerData.user.address.zip}<br />
                           {customerData.user.address.country}
                         </>
                       )}
