@@ -425,7 +425,7 @@ const TicketDetailAgent = () => {
                 <option value="Critical">Critical</option>
               </select>
             ) : (
-              <p className={ticket.priority === 'Not Assigned' ? 'not-assigned' : 'priority'}>
+              <p className={ticket.priority === 'Not Assigned' ? 'not-assigned' : `priority ${ticket.priority}`}>
                 {ticket.priority}
               </p>
             )}
