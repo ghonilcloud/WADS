@@ -19,7 +19,7 @@ const upload = multer({
 
 /**
  * @openapi
- * /api/user/signup:
+ * /user/signup:
  *   post:
  *     tags:
  *       - Authentication
@@ -60,7 +60,7 @@ router.post('/signup', userController.signUp);
 
 /**
  * @openapi
- * /api/user/signup/agent:
+ * /user/signup/agent:
  *   post:
  *     tags:
  *       - Users
@@ -100,7 +100,7 @@ router.post('/signup/agent', auth, userController.createServiceAgent);
 
 /**
  * @openapi
- * /api/user/login:
+ * /user/login:
  *   post:
  *     tags:
  *       - Authentication
@@ -145,7 +145,7 @@ router.post('/login', userController.login);
 
 /**
  * @openapi
- * /api/user/logout:
+ * /user/logout:
  *   post:
  *     tags:
  *       - Authentication
@@ -176,7 +176,7 @@ router.post('/logout', auth, userController.logout);
 // OTP verification routes
 /**
  * @openapi
- * /api/user/send-verification:
+ * /user/send-verification:
  *   post:
  *     tags:
  *       - Authentication
@@ -223,7 +223,7 @@ router.post('/send-verification', userController.sendVerification);
 
 /**
  * @openapi
- * /api/user/verify-otp:
+ * /user/verify-otp:
  *   post:
  *     tags:
  *       - Authentication
@@ -280,7 +280,7 @@ router.post('/verify-otp', userController.verifyOTP);
 // Protected routes
 /**
  * @openapi
- * /api/user/profile:
+ * /user/profile:
  *   get:
  *     tags:
  *       - Users
@@ -307,7 +307,7 @@ router.get('/profile', auth, userController.getProfile);
 
 /**
  * @openapi
- * /api/user/profile:
+ * /user/profile:
  *    patch:
  *     tags:
  *       - Users
@@ -344,7 +344,7 @@ router.patch('/profile', auth, userController.updateProfile);
 
 /**
  * @openapi
- * /api/user/role/agents:
+ * /user/role/agents:
  *   get:
  *     tags:
  *       - Users
@@ -369,7 +369,7 @@ router.get('/role/agents', auth, userController.getAgents);
 
 /**
  * @openapi 
- * /api/user/role/customers:
+ * /user/role/customers:
  *   get:
  *     tags:
  *       - Users
@@ -394,7 +394,7 @@ router.get('/role/customers', auth, userController.getCustomers);
 
 /**
  * @openapi
- * /api/user/profile-picture:
+ * /user/profile-picture:
  *   post:
  *     tags:
  *       - Users
@@ -433,7 +433,7 @@ router.post('/profile-picture', auth, upload.single('profilePicture'), userContr
 
 /**
  * @openapi
- * /api/user/id/{userId}:
+ * /user/id/{userId}:
  *   get:
  *     tags:
  *       - Users
