@@ -46,6 +46,11 @@ const TicketsCust = () => {
         fetchData();
     }, [navigate]);
 
+    const truncateText = (text, maxLength = 100) => {
+        if (!text) return '';
+        return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+    };
+
     const toggleDropdown = () => {
         setShowDropdown(prev => !prev);
     };
@@ -141,7 +146,7 @@ const TicketsCust = () => {
                                         <p className={`category ${getCategoryClass(ticket.category)}`}>
                                             {ticket.category}
                                         </p>
-                                        <p className="description">{ticket.description}</p>
+                                        <p className="description">{truncateText(ticket.description)}</p>
                                         <div className="ticket-footer">
                                             <p className={`status ${ticket.status}`}>
                                                 {formatStatus(ticket.status)}
