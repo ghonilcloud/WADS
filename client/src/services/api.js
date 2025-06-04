@@ -1,11 +1,10 @@
 import axios from 'axios';
+import config from '../config/environment';
 
 // Create an axios instance with default config
 const api = axios.create({
-  baseURL: import.meta.env.PROD
-    ? 'https://e2425-wads-l4bcg2-server.csbihub.id/api'
-    : '/api',
-  withCredentials: true, // Important for cookies/authentication
+  baseURL: config.apiBaseUrl,
+  withCredentials: true, 
   headers: {
     'Content-Type': 'application/json',
   },
@@ -16,7 +15,7 @@ api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
   },
