@@ -70,6 +70,13 @@ const TicketsAgent = () => {
         }).format(date);
     };
 
+    const formatStatus = (status) => {
+    return status
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    };
+
     const getCategoryClass = (category) => {
         const categoryMap = {
             'Product Issues': 'product-issues',
@@ -132,10 +139,11 @@ const TicketsAgent = () => {
                                         </div>
                                         <p className="subject">{ticket.subject}</p>
                                         <p className={`category ${getCategoryClass(ticket.category)}`}>{ticket.category}</p>
-                                        <p className="description">{ticket.description}</p>
+                                        <p className="description">{ticket.description}</p>                                        
                                         <p><strong>Ticket Handler:</strong> <span className={ticket.handler === 'Not Assigned' ? 'not-assigned' : 'handler'}>{ticket.handler}</span></p>
-                                        <p><strong>Priority:</strong> <span className={`priority ${ticket.priority === 'Not Assigned' ? 'priority-not-assigned' : `priority-${ticket.priority.toLowerCase()}`}`}>{ticket.priority}</span></p>                                        <p className={`status ${ticket.status}`}>
-                                            {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
+                                        <p><strong>Priority:</strong> <span className={`priority ${ticket.priority === 'Not Assigned' ? 'priority-not-assigned' : `priority-${ticket.priority.toLowerCase()}`}`}>{ticket.priority}</span></p>
+                                        <p className={`status ${ticket.status}`}>
+                                            {formatStatus(ticket.status)}
                                         </p>
                                         <Link to={`/ticket-agent/${ticket.ticketId}`}>
                                             <button className="view-btn">View Details</button>

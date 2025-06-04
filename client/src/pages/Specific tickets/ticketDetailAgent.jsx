@@ -324,44 +324,45 @@ const TicketDetailAgent = () => {
             <div className="customer-info-grid">
               <div className="info-item">
                 <span className="info-label">Full Name: </span>
-                <span className="info-value">{customerData.firstName} {customerData.lastName}</span>
+                <span className="info-value">
+                  {`${customerData?.firstName || ''} ${customerData?.lastName || ''}`}
+                </span>
               </div>
               
               <div className="info-item">
                 <span className="info-label">Email: </span>
-                <span className="info-value">{customerData.email || 'Not provided'}</span>
+                <span className="info-value">{customerData?.email || 'Not provided'}</span>
               </div>
               
               <div className="info-item">
                 <span className="info-label">Phone: </span>
-                <span className="info-value">{customerData.phone || 'Not provided'}</span>
+                <span className="info-value">{customerData?.phoneNumber || 'Not provided'}</span>
               </div>
               
               <div className="info-item">
                 <span className="info-label">Account Created: </span>
-                <span className="info-value">{customerData.createdAt ? formatDate(customerData.createdAt) : 'Unknown'}</span>
+                <span className="info-value">
+                  {customerData?.createdAt ? formatDate(customerData.createdAt) : 'Unknown'}
+                </span>
               </div>
               
               <div className="info-item">
-                <span className="info-label">Address: </span><br></br>
+                <span className="info-label">Address: </span>
                 <span className="info-value">
-                  {customerData.address ? (
+                  {customerData?.address ? (
                     <>
-                      {customerData.address.street ? (
+                      {customerData.address.street && (
                         <>
                           {customerData.address.street}<br />
-                          {customerData.address.city ? `${customerData.address.city}, ` : ''}
-                          {customerData.address.state || ''} {customerData.address.zip || ''}<br />
-                          {customerData.address.country || ''}
+                          {customerData.address.city && `${customerData.address.city}, `}
+                          {customerData.address.state} {customerData.address.zipCode}<br />
+                          {customerData.address.country}
                         </>
-                      ) : (
-                        'Not provided'
                       )}
                     </>
                   ) : 'Not provided'}
                 </span>
               </div>
-              <br></br>
             </div>
           </div>
         ) : null)}
