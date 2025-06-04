@@ -278,11 +278,188 @@ router.post('/send-verification', userController.sendVerification);
 router.post('/verify-otp', userController.verifyOTP);
 
 // Protected routes
+/**
+ * @swagger
+ * /api/user/profile:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Get user profile
+ *     description: Retrieves the profile information of the authenticated user
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Profile retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+ 
 router.get('/profile', auth, userController.getProfile);
+
+/**
+ * @swagger
+ * /api/user/profile:
+ *    patch:
+ *     tags:
+ *       - Users
+ *     summary: Update user profile
+ *     description: Updates the profile information of the authenticated user
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               phone:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Profile updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *
+ */
 router.patch('/profile', auth, userController.updateProfile);
+
+/**
+ * @swagger
+ * /api/user/role/agents:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Get all agents
+ *     description: Retrieves a list of all service agents (requires authentication)
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of agents retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *
+ */
 router.get('/role/agents', auth, userController.getAgents);
+
+/**
+ * @swagger 
+ * /api/user/role/customers:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Get all customers
+ *     description: Retrieves a list of all customers (requires authentication)
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of customers retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *
+ */
 router.get('/role/customers', auth, userController.getCustomers);
+
+/**
+ * @swagger
+ * /api/user/profile-picture:
+ *   post:
+ *     tags:
+ *       - Users
+ *     summary: Upload profile picture
+ *     description: Upload a new profile picture for the authenticated user
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               profilePicture:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Profile picture uploaded successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Profile picture uploaded successfully
+ *       400:
+ *         description: Invalid file format or size
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *
+ */
 router.post('/profile-picture', auth, upload.single('profilePicture'), userController.uploadProfilePicture);
+
+/**
+ * @swagger
+ * /api/user/id/{userId}:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Get user by ID
+ *     description: Retrieve a user's information by their ID (requires authentication)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user to retrieve
+ *     responses:
+ *       200:
+ *         description: User retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       404:
+ *         description: User not found
+ */
 router.get('/id/:userId', auth, userController.getUserById);
 
 module.exports = router;
