@@ -12,7 +12,7 @@ const ticketService = {
 
     async getTicketById(ticketId) {
         try {
-            const response = await api.get(`/tickets/${ticketId}`);
+            const response = await api.get(`/tickets/ticket/${ticketId}`);
             if (!response.data.ticket) {
                 throw new Error('Ticket not found');
             }
@@ -24,7 +24,7 @@ const ticketService = {
 
     async submitSurvey(ticketId, { rating, feedback }) {
         try {
-            const response = await api.patch(`/tickets/${ticketId}`, {
+            const response = await api.patch(`/tickets/ticket/${ticketId}`, {
                 rating,
                 ratingFeedback: feedback
             });
@@ -45,7 +45,7 @@ const ticketService = {
 
     async updateTicketStatus(ticketId, status) {
         try {
-            const response = await api.patch(`/tickets/${ticketId}`, { status });
+            const response = await api.patch(`/tickets/ticket/${ticketId}`, { status });
             return response.data.ticket;
         } catch (error) {
             throw new Error(error.response?.data?.message || 'Failed to update ticket status');
@@ -54,7 +54,7 @@ const ticketService = {
 
     async updateTicketPriority(ticketId, priority) {
         try {
-            const response = await api.patch(`/tickets/${ticketId}`, { priority });
+            const response = await api.patch(`/tickets/ticket//${ticketId}`, { priority });
             return response.data.ticket;
         } catch (error) {
             throw new Error(error.response?.data?.message || 'Failed to update ticket priority');
@@ -63,14 +63,14 @@ const ticketService = {
 
     async assignTicket(ticketId, handlerId) {
         try {
-            const response = await api.patch(`/tickets/${ticketId}`, { handlerId });
+            const response = await api.patch(`/tickets/ticket/${ticketId}`, { handlerId });
             return response.data.ticket;
         } catch (error) {
             throw new Error(error.response?.data?.message || 'Failed to assign ticket');
         }
     },    async updateTicket(ticketId, updateData) {
         try {
-            const response = await api.patch(`/tickets/${ticketId}`, updateData);
+            const response = await api.patch(`/tickets/ticket/${ticketId}`, updateData);
             return response.data.ticket;
         } catch (error) {
             throw new Error(error.response?.data?.message || 'Failed to update ticket');
