@@ -132,6 +132,7 @@ const TicketDetailAgent = () => {
       }
       
       const data = await authService.getUserById(id);
+      console.log("Customer data received:", JSON.stringify(data));
       setCustomerData(data);
     } catch (err) {
       console.error("Error fetching customer data:", err);
