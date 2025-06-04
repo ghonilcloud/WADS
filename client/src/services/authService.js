@@ -84,7 +84,7 @@ const authService = {
 
   async getUserById(userId) {
     try {
-      const response = await api.get(`/user/${userId}`);
+      const response = await api.get(`/user/id/${userId}`); 
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to get user');
