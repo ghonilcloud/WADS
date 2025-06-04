@@ -91,8 +91,14 @@ const TicketDetailAgent = () => {
   const fetchCustomerData = async (userId) => {
     try {
       setCustomerDataLoading(true);
-      // Extract the actual ID string from the userId object
-      const id = userId._id || userId;
+      // Handle different possible formats of userId
+      let id = userId;
+      
+      // If userId is an object, extract the ID value
+      if (typeof userId === 'object' && userId !== null) {
+        id = userId._id || userId.id || userId;
+      }
+      
       const data = await authService.getUserById(id);
       setCustomerData(data);
     } catch (err) {
