@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; 
-import Header from "../../components/header-agent-all-tickets";
+import Header from "../../components/header-agent-owned-tickets";
 import authService from '../../services/authService';
 import FileAttachments from '../../components/FileAttachments';
 import SatisfactionSurveyModal from '../../components/SatisfactionSurveyModal';
