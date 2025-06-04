@@ -132,6 +132,7 @@ const TicketDetailAgent = () => {
       }
       
       const data = await authService.getUserById(id);
+      console.log("Customer data received:", JSON.stringify(data));
       setCustomerData(data);
     } catch (err) {
       console.error("Error fetching customer data:", err);
@@ -325,42 +326,51 @@ const TicketDetailAgent = () => {
               <div className="info-item">
                 <span className="info-label">Full Name: </span>
                 <span className="info-value">
-                  {`${customerData?.firstName || ''} ${customerData?.lastName || ''}`}
+                  {`${customerData?.user?.firstName || ''} ${customerData?.user?.lastName || ''}`}
                 </span>
               </div>
               
               <div className="info-item">
                 <span className="info-label">Email: </span>
-                <span className="info-value">{customerData?.email || 'Not provided'}</span>
+                <span className="info-value">{customerData?.user?.email || 'Not provided'}</span>
               </div>
               
               <div className="info-item">
                 <span className="info-label">Phone: </span>
-                <span className="info-value">{customerData?.phoneNumber || 'Not provided'}</span>
+                <span className="info-value">{customerData?.user?.phone || 'Not provided'}</span>
               </div>
               
               <div className="info-item">
                 <span className="info-label">Account Created: </span>
                 <span className="info-value">
-                  {customerData?.createdAt ? formatDate(customerData.createdAt) : 'Unknown'}
+                  {customerData?.user?.createdAt ? formatDate(customerData.user.createdAt) : 'Unknown'}
                 </span>
               </div>
               
               <div className="info-item">
                 <span className="info-label">Address: </span>
                 <span className="info-value">
-                  {customerData?.address ? (
+                  {customerData?.user?.address ? (
                     <>
-                      {customerData.address.street && (
+                      {customerData.user.address.street && (
                         <>
-                          {customerData.address.street}<br />
-                          {customerData.address.city && `${customerData.address.city}, `}
-                          {customerData.address.state} {customerData.address.zipCode}<br />
-                          {customerData.address.country}
+                          {customerData.user.address.street}<br />
+                          {customerData.user.address.city && `${customerData.user.address.city}, `}
+                          {customerData.user.address.state} {customerData.user.address.zip}<br />
+                          {customerData.user.address.country}
                         </>
                       )}
                     </>
                   ) : 'Not provided'}
+                </span>
+              </div>
+
+              <div className="info-item">
+                <span className="info-label">Gender: </span>
+                <span className="info-value">
+                  {customerData?.user?.gender ? 
+                    customerData.user.gender.charAt(0).toUpperCase() + customerData.user.gender.slice(1) : 
+                    'Not provided'}
                 </span>
               </div>
             </div>
