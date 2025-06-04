@@ -15,7 +15,7 @@ const isAdmin = (req, res, next) => {
 };
 
 /**
- * @swagger
+ * @openapi
  * /api/analytics/dashboard:
  *   get:
  *     tags:

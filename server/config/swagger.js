@@ -14,7 +14,6 @@ const options = {
         email: 'cottoneightservice@gmail.com'
       }
     },
-    // Safe configuration that doesn't use full URLs
     servers: [
       {
         url: '/api',

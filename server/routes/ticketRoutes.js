@@ -5,7 +5,7 @@ const auth = require('../middleware/auth');
 const upload = require('../middleware/upload');
 
 /**
- * @swagger
+ * @openapi
  * /api/tickets/all:
  *   get:
  *     tags:
@@ -42,7 +42,7 @@ const upload = require('../middleware/upload');
 router.get('/all', auth, getAllTickets);
 
 /**
- * @swagger
+ * @openapi
  * /api/tickets/list:
  *   get:
  *     tags:
@@ -79,7 +79,7 @@ router.get('/all', auth, getAllTickets);
 router.get('/list', auth, getUserTickets);
 
 /**
- * @swagger
+ * @openapi
  * /api/tickets/create:
  *   post:
  *     tags:
@@ -155,7 +155,7 @@ router.get('/list', auth, getUserTickets);
 router.post('/create', auth, upload.array('attachments', 5), createTicket);
 
 /**
- * @swagger
+ * @openapi
  * /api/tickets/ticket/{ticketId}:
  *   patch:
  *     tags:
@@ -232,7 +232,7 @@ router.post('/create', auth, upload.array('attachments', 5), createTicket);
 router.patch('/ticket/:ticketId', auth, upload.array('attachments', 5), updateTicket);
 
 /**
- * @swagger
+ * @openapi
  * /api/tickets/ticket/{ticketId}:
  *   delete:
  *     tags:
@@ -281,7 +281,7 @@ router.patch('/ticket/:ticketId', auth, upload.array('attachments', 5), updateTi
 router.delete('/ticket/:ticketId', auth, deleteTicket);
 
 /**
- * @swagger
+ * @openapi
  * /api/tickets/ticket/{ticketId}:
  *   get:
  *     tags:

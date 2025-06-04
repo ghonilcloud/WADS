@@ -17,49 +17,49 @@ const upload = multer({
 });
 
 
-// /**
-//  * @swagger
-//  * /api/user/signup:
-//  *   post:
-//  *     tags:
-//  *       - Authentication
-//  *     summary: Register a new user
-//  *     description: Registers a new customer user and sends OTP for email verification
-//  *     requestBody:
-//  *       required: true
-//  *       content:
-//  *         application/json:
-//  *           schema:
-//  *             $ref: '#/components/schemas/SignupRequest'
-//  *     responses:
-//  *       200:
-//  *         description: OTP sent for verification
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               type: object
-//  *               properties:
-//  *                 message:
-//  *                   type: string
-//  *                   example: OTP sent to your email
-//  *       400:
-//  *         description: Email already in use or invalid input
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               $ref: '#/components/schemas/Error'
-//  *       500:
-//  *         description: Server error
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               $ref: '#/components/schemas/Error'
-//  */
+/**
+ * @openapi
+ * /api/user/signup:
+ *   post:
+ *     tags:
+ *       - Authentication
+ *     summary: Register a new user
+ *     description: Registers a new customer user and sends OTP for email verification
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SignupRequest'
+ *     responses:
+ *       200:
+ *         description: OTP sent for verification
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: OTP sent to your email
+ *       400:
+ *         description: Email already in use or invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.post('/signup', userController.signUp);
 
 
 /**
- * @swagger
+ * @openapi
  * /api/user/signup/agent:
  *   post:
  *     tags:
@@ -99,7 +99,7 @@ router.post('/signup/agent', auth, userController.createServiceAgent);
 
 
 /**
- * @swagger
+ * @openapi
  * /api/user/login:
  *   post:
  *     tags:
@@ -144,7 +144,7 @@ router.post('/signup/agent', auth, userController.createServiceAgent);
 router.post('/login', userController.login);
 
 /**
- * @swagger
+ * @openapi
  * /api/user/logout:
  *   post:
  *     tags:
@@ -175,7 +175,7 @@ router.post('/logout', auth, userController.logout);
 
 // OTP verification routes
 /**
- * @swagger
+ * @openapi
  * /api/user/send-verification:
  *   post:
  *     tags:
@@ -222,7 +222,7 @@ router.post('/logout', auth, userController.logout);
 router.post('/send-verification', userController.sendVerification);
 
 /**
- * @swagger
+ * @openapi
  * /api/user/verify-otp:
  *   post:
  *     tags:
@@ -279,7 +279,7 @@ router.post('/verify-otp', userController.verifyOTP);
 
 // Protected routes
 /**
- * @swagger
+ * @openapi
  * /api/user/profile:
  *   get:
  *     tags:
@@ -306,7 +306,7 @@ router.post('/verify-otp', userController.verifyOTP);
 router.get('/profile', auth, userController.getProfile);
 
 /**
- * @swagger
+ * @openapi
  * /api/user/profile:
  *    patch:
  *     tags:
@@ -343,7 +343,7 @@ router.get('/profile', auth, userController.getProfile);
 router.patch('/profile', auth, userController.updateProfile);
 
 /**
- * @swagger
+ * @openapi
  * /api/user/role/agents:
  *   get:
  *     tags:
@@ -368,7 +368,7 @@ router.patch('/profile', auth, userController.updateProfile);
 router.get('/role/agents', auth, userController.getAgents);
 
 /**
- * @swagger 
+ * @openapi 
  * /api/user/role/customers:
  *   get:
  *     tags:
@@ -393,7 +393,7 @@ router.get('/role/agents', auth, userController.getAgents);
 router.get('/role/customers', auth, userController.getCustomers);
 
 /**
- * @swagger
+ * @openapi
  * /api/user/profile-picture:
  *   post:
  *     tags:
@@ -432,7 +432,7 @@ router.get('/role/customers', auth, userController.getCustomers);
 router.post('/profile-picture', auth, upload.single('profilePicture'), userController.uploadProfilePicture);
 
 /**
- * @swagger
+ * @openapi
  * /api/user/id/{userId}:
  *   get:
  *     tags:
