@@ -81,6 +81,38 @@ const TicketDetailAgent = () => {
     }
   }, [chatMessages, showChatbox]);
 
+  // Add auto-refresh for chat messages
+  useEffect(() => {
+    let chatRefreshInterval;
+    
+    // Only set up the interval when chatbox is visible
+    if (showChatbox && ticketId) {
+      const fetchChatMessages = async () => {
+        try {
+          const messagesData = await chatService.getMessages(ticketId);
+          // Only update if we received data and it's different from current messages
+          if (messagesData && JSON.stringify(messagesData) !== JSON.stringify(chatMessages)) {
+            setChatMessages(messagesData);
+          }
+        } catch (err) {
+          console.error("Error refreshing chat messages:", err);
+          // Don't show error to user for background refresh
+        }
+      };
+      
+      // Set up interval - refresh every 3 seconds (3000 ms)
+      chatRefreshInterval = setInterval(fetchChatMessages, 3000);
+    }
+    
+    // Clean up interval when component unmounts or chatbox is closed
+    return () => {
+      if (chatRefreshInterval) {
+        clearInterval(chatRefreshInterval);
+      }
+    };
+  }, [showChatbox, ticketId, chatMessages]);
+
+
   // Fetch customer data when ticket is loaded
   useEffect(() => {
     if (ticket && ticket.userId) {
@@ -382,7 +414,7 @@ const TicketDetailAgent = () => {
                 <option value="Critical">Critical</option>
               </select>
             ) : (
-              <p className={`priority ${ticket.priority}`}>
+              <p className={ticket.priority === 'Not Assigned' ? 'not-assigned' : 'priority'}>
                 {ticket.priority}
               </p>
             )}
@@ -394,7 +426,7 @@ const TicketDetailAgent = () => {
           {isEditing ? (
             <select
               value={editedTicket.status}
-              onChange={(e) => handleChange('status', e.target.value)}
+              onChange={(e) => handleChange('status', e.target.value.toLowerCase())}
               disabled={saving}
             >
               <option value="open">{formatStatus('open')}</option>

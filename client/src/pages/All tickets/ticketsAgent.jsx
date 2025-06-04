@@ -134,7 +134,7 @@ const TicketsAgent = () => {
                                         <p className={`category ${getCategoryClass(ticket.category)}`}>{ticket.category}</p>
                                         <p className="description">{ticket.description}</p>
                                         <p><strong>Ticket Handler:</strong> <span className={ticket.handler === 'Not Assigned' ? 'not-assigned' : 'handler'}>{ticket.handler}</span></p>
-                                        <p><strong>Priority:</strong> <span className={ticket.priority === 'Not Assigned' ? 'not-assigned' : 'handler'}>{ticket.priority}</span></p>
+                                        <p><strong>Priority:</strong> <span className={`priority priority-${ticket.priority.toLowerCase()}`}>{ticket.priority}</span></p>
                                         <p className={`status ${ticket.status}`}>
                                             {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
                                         </p>
