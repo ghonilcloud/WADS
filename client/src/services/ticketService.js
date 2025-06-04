@@ -76,7 +76,7 @@ const ticketService = {
             throw new Error(error.response?.data?.message || 'Failed to update ticket');
         }
     },
-      async createTicket(ticketData, files) {
+    async createTicket(ticketData, files) {
         try {
             const formData = new FormData();
             
@@ -92,7 +92,7 @@ const ticketService = {
                 }
             }
             
-            const response = await api.post('/tickets', formData, {
+            const response = await api.post('/tickets/create', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
