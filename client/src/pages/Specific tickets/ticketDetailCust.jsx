@@ -138,6 +138,13 @@ const TicketDetailCust = () => {
         }).format(new Date(timestamp));
     };
 
+    const formatStatus = (status) => {
+        return status
+            .split('_')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    };
+
     if (loading) {
         return (
             <>
@@ -178,7 +185,7 @@ const TicketDetailCust = () => {
                         {ticket.category}
                     </p>
                     <p className={`status ${ticket.status}`}>
-                        {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1).replace('_', ' ')}
+                        {formatStatus(ticket.status)}
                     </p>
                     <p>Created: {formatDate(ticket.createdAt)}</p>
                     <p>Handler: {ticket.handler || 'Not Assigned'}</p>
