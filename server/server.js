@@ -34,6 +34,8 @@ app.use(session({
 app.use(cookieParser());
 
 const userRoutes = require('./routes/userRoutes');
+const ticketRoutes = require('./routes/ticketRoutes');
+const chatRoutes = require('./routes/chatRoutes');
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT;
