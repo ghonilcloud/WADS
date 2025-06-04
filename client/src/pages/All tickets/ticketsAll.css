@@ -182,6 +182,10 @@
   font-size: 0.875rem;
 }
 
+.priority-not-assigned {
+  color: #c62828;
+}
+
 .priority-low {
   background-color: #e8f5e9;
   color: #388e3c;
