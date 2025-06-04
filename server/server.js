@@ -33,6 +33,8 @@ app.use(session({
 
 app.use(cookieParser());
 
+const { specs, swaggerUi, swaggerSetup } = require('./config/swagger');
+
 const userRoutes = require('./routes/userRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 const chatRoutes = require('./routes/chatRoutes');
@@ -40,6 +42,12 @@ const analyticsRoutes = require('./routes/analyticsRoutes');
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT;
+
+app.get('/api-docs/swagger.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(specs);
+});
+app.use('/api-docs', swaggerUi.serve, swaggerSetup);
 
 app.use('/api/user', userRoutes);
 app.use('/api/tickets', ticketRoutes);
