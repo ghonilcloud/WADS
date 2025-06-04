@@ -3,7 +3,7 @@ import api from './api';
 const ticketService = {
     async getTicketsByUser() {
         try {
-            const response = await api.get('/tickets');
+            const response = await api.get('/tickets/list');
             return response.data.tickets;
         } catch (error) {
             throw new Error(error.response?.data?.message || 'Failed to fetch tickets');
