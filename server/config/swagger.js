@@ -16,7 +16,7 @@ const options = {
     },
     servers: [
       {
-        url: '/api',
+        url: '/',
         description: 'API Server'
       }
     ],
@@ -314,8 +314,16 @@ const createSwaggerSetup = (specs) => {
   });
 };
 
+console.log('Swagger Initialization:');
+console.log('Found Routes:', Object.keys(specs.paths || {}));
+console.log('API Files Found:', options.apis);
+console.log('Tags Found:', specs.tags);
+
 module.exports = { 
   specs, 
   swaggerUi,
-  swaggerSetup: createSwaggerSetup(specs)
+  swaggerSetup: createSwaggerSetup(specs, {
+    explorer: true,
+    customSiteTitle: "Ticket Management System API"
+    })
 };
