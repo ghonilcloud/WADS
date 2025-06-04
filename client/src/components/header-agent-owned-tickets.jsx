@@ -13,10 +13,8 @@ const Header = ({ userData }) => {
         <Link to="/agent-home"><h1 className="logo">Cottoneight</h1></Link>
         <div className="btn-group">
           <div className='btn-container'>
-            <Link to="/all-tickets"><button className="btn">All Tickets</button></Link>
-          </div>
-          <div className='btn-container'>
-            <Link to="/owned-tickets"><button className="btn active">My Tickets</button></Link>
+            <Link to="/all-tickets"><button className="btn active">All Tickets</button></Link>
+            <Link to="/owned-tickets"><button className="btn">My Tickets</button></Link>
           </div>
           <button className="profile-icon-btn" onClick={() => setShowProfile(true)}>
             {userData?.profilePicture?.url ? (
