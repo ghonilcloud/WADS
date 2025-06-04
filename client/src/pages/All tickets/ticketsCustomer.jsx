@@ -71,6 +71,13 @@ const TicketsCust = () => {
         }).format(date);
     };
 
+    const formatStatus = (status) => {
+        return status
+            .split('_')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    };
+
     const getCategoryClass = (category) => {
         const categoryMap = {
             'Product Issues': 'product-issues',
@@ -83,19 +90,6 @@ const TicketsCust = () => {
             'Other': 'other'
         };
         return categoryMap[category] || 'other';
-    };
-
-    const renderRating = (ticket) => {
-        if (!ticket.rating) return null;
-        const stars = '★'.repeat(ticket.rating) + '☆'.repeat(5 - ticket.rating);
-        return (
-            <div className="ticket-rating">
-                <span className="stars">{stars}</span>
-                {ticket.ratingFeedback && (
-                    <p className="rating-feedback">{ticket.ratingFeedback}</p>
-                )}
-            </div>
-        );
     };
   
     return (
@@ -150,7 +144,7 @@ const TicketsCust = () => {
                                         <p className="description">{ticket.description}</p>
                                         <div className="ticket-footer">
                                             <p className={`status ${ticket.status}`}>
-                                                {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
+                                                {formatStatus(ticket.status)}
                                             </p>
                                             <button 
                                                 className="view-btn"
