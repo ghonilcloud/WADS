@@ -10,7 +10,7 @@ const options = {
       description: 'API documentation for the ticket management system with customer support, agent workflows, and admin controls',
       contact: {
         name: 'API Support',
-        email: 'support@ticketsystem.com'
+        email: 'cottoneightservice@gmail.com'
       }
     },
     // Safe configuration that doesn't use full URLs
@@ -294,13 +294,13 @@ const options = {
         description: 'Analytics and reporting'
       },
     ]
-  },  apis: [
-    './routes/*.js',
-    './controllers/*.js',
-    './models/*.js',
-    './middleware/*.js'
-  ], // Path to the API routes, controllers, models, and middleware
-};
+  },  apis:  [
+        path.join(__dirname, '../routes/*.js'),
+        path.join(__dirname, '../controllers/*.js'),
+        path.join(__dirname, '../models/*.js'),
+        path.join(__dirname, '../middleware/*.js')
+    ]
+  };
 
 const specs = swaggerJsdoc(options);
 
