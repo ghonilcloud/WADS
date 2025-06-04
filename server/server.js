@@ -41,6 +41,8 @@ const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT;
 
 app.use('/api/user', userRoutes);
+app.use('/api/tickets', ticketRoutes);
+app.use('/api/chats', chatRoutes);
 
 mongoose.set('strictQuery', true);
 mongoose.connect(CONNECTION_URL)
