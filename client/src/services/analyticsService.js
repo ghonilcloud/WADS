@@ -3,7 +3,7 @@ import api from './api';
 const analyticsService = {
     async getAnalyticsData() {
         try {
-            const response = await api.get('/analytics');
+            const response = await api.get('/analytics/dashboard');
             return response.data.data;
         } catch (error) {
             throw new Error(error.response?.data?.message || 'Failed to fetch analytics data');

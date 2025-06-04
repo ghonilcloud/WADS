@@ -33,40 +33,32 @@ const authService = {
 
   async login(credentials) {
     try {
-      const response = await fetch(`${API_URL}/login`, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials),
-      });
-
-      // Check if response is OK before trying to parse JSON
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Login response error:', response.status, errorText);
-        try {
-          const errorData = JSON.parse(errorText);
-          throw new Error(errorData.message || 'Login failed');
-        } catch (e) {
-          throw new Error(`Login failed with status ${response.status}: ${errorText.substring(0, 100)}`);
-        }
-      }
-
-      const data = await response.json();
+      const response = await api.post('/user/login', credentials);
       
-      if (!data || !data.user) {
-        console.error('Invalid login response data:', data);
+      if (response.data && response.data.token) {
+        localStorage.setItem('token', response.data.token);
+      }
+      
+      if (!response.data || !response.data.user) {
+        console.error('Invalid login response data:', response.data);
         throw new Error('Invalid response from server');
       }
-
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-      }
+      
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Login failed');
+      console.error('Login error:', error);
+      
+      // Handle different types of errors
+      if (error.response) {
+        // The request was made and the server responded with a status code outside of 2xx
+        throw new Error(error.response.data?.message || `Login failed with status ${error.response.status}`);
+      } else if (error.request) {
+        // The request was made but no response was received
+        throw new Error('No response from server. Please check your network connection.');
+      } else {
+        // Something happened in setting up the request
+        throw new Error(error.message || 'Login failed');
+      }
     }
   },
 
@@ -92,7 +84,7 @@ const authService = {
 
   async getUserById(userId) {
     try {
-      const response = await api.get(`/user/${userId}`);
+      const response = await api.get(`/user/id/${userId}`); 
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to get user');

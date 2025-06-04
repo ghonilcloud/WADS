@@ -45,33 +45,7 @@ const userService = {
       throw new Error(error.response?.data?.message || 'Failed to get customers');
     }
   },
-
-  async createServiceAgent(agentData) {
-    try {
-      const response = await api.post('/user/admin/agent', agentData);
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.message || 'Failed to create service agent');
-    }
-  },
   
-  async updateUserRole(userId, role) {
-    try {
-      const response = await api.patch(`/user/${userId}/role`, { role });
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.message || 'Failed to update user role');
-    }
-  },
-  
-  async removeUser(userId) {
-    try {
-      const response = await api.delete(`/user/${userId}`);
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.message || 'Failed to remove user');
-    }
-  }
 };
 
 export default userService;

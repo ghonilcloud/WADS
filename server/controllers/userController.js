@@ -145,16 +145,6 @@ const login = async (req, res) => {
   }
 };
 
-const logout = async (req, res) => {
-  try {
-    req.user.tokens = req.user.tokens.filter(token => token.token !== req.token);
-    await req.user.save();
-    res.json({ message: 'Logged out successfully' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
 const getProfile = async (req, res) => {
   res.json(req.user);
 };
@@ -177,23 +167,108 @@ const updateProfile = async (req, res) => {
   }
 };
 
-const getUserById = async (req, res) => {
+const uploadProfilePicture = async (req, res) => {
   try {
-    // Only service agents and admins can access other user details
-    if (req.user.role !== 'service_agent' && req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Access denied' });
+    if (!req.file) {
+      return res.status(400).json({ message: 'No image file provided' });
     }
 
-    const user = await User.findById(req.params.userId).select('-password -tokens');
-    
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+    // Convert buffer to base64
+    const base64String = req.file.buffer.toString('base64');
+    const dataURI = `data:${req.file.mimetype};base64,${base64String}`;
+
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(dataURI, {
+      folder: 'profile_pictures',
+      resource_type: 'auto'
+    });
+
+    // Delete old image if exists
+    if (req.user.profilePicture?.public_id) {
+      try {
+        await cloudinary.uploader.destroy(req.user.profilePicture.public_id);
+      } catch (error) {
+        console.error('Error deleting old image:', error);
+      }
     }
 
-    res.json({ user });
+    // Update user profile picture
+    req.user.profilePicture = {
+      public_id: result.public_id,
+      url: result.secure_url
+    };
+    await req.user.save();
+
+    res.json({ 
+      profilePicture: req.user.profilePicture,
+      message: 'Profile picture updated successfully' 
+    });
+  } catch (error) {
+    console.error('Error uploading profile picture:', error);
+    res.status(500).json({ 
+      message: 'Failed to upload profile picture', 
+      error: error.message 
+    });
+  }
+};
+
+const logout = async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter(token => token.token !== req.token);
+    await req.user.save();
+    res.json({ message: 'Logged out successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+};
+
+const createServiceAgent = async (req, res) => {
+    try {
+        // Only admins can create service agents
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Access denied. Only admins can create service agents.' });
+        }
+
+        const { email } = req.body;
+        
+        // Check if user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email already in use' });
+        }
+
+        // Create the service agent account (already verified)
+        const newAgent = new User({
+            ...req.body,
+            role: 'service_agent',
+            isVerified: true
+        });
+
+        await newAgent.save();
+
+        // Send welcome email with credentials using the dedicated template
+        await userSendMail(
+            email,
+            req.body.password,  // Original unencrypted password
+            null,  // Subject will be set by the email handler
+            'Welcome Service Agent',  // Using the new email type
+            res
+        );
+
+        res.status(201).json({
+            message: 'Service agent account created successfully',
+            user: {
+                _id: newAgent._id,
+                email: newAgent.email,
+                firstName: newAgent.firstName,
+                lastName: newAgent.lastName,
+                role: newAgent.role
+            }
+        });
+    } catch (error) {
+        console.error('Error creating service agent:', error);
+        res.status(500).json({ message: error.message || 'Failed to create service agent account' });
+    }
 };
 
 const getAgents = async (req, res) => {
@@ -267,187 +342,36 @@ const getCustomers = async (req, res) => {
   }
 };
 
-const uploadProfilePicture = async (req, res) => {
+const getUserById = async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ message: 'No image file provided' });
+    // Only service agents and admins can access other user details
+    if (req.user.role !== 'service_agent' && req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Access denied' });
     }
 
-    // Convert buffer to base64
-    const base64String = req.file.buffer.toString('base64');
-    const dataURI = `data:${req.file.mimetype};base64,${base64String}`;
-
-    // Upload to Cloudinary
-    const result = await cloudinary.uploader.upload(dataURI, {
-      folder: 'profile_pictures',
-      resource_type: 'auto'
-    });
-
-    // Delete old image if exists
-    if (req.user.profilePicture?.public_id) {
-      try {
-        await cloudinary.uploader.destroy(req.user.profilePicture.public_id);
-      } catch (error) {
-        console.error('Error deleting old image:', error);
-      }
-    }
-
-    // Update user profile picture
-    req.user.profilePicture = {
-      public_id: result.public_id,
-      url: result.secure_url
-    };
-    await req.user.save();
-
-    res.json({ 
-      profilePicture: req.user.profilePicture,
-      message: 'Profile picture updated successfully' 
-    });
-  } catch (error) {
-    console.error('Error uploading profile picture:', error);
-    res.status(500).json({ 
-      message: 'Failed to upload profile picture', 
-      error: error.message 
-    });
-  }
-};
-
-const createServiceAgent = async (req, res) => {
-    try {
-        // Only admins can create service agents
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Access denied. Only admins can create service agents.' });
-        }
-
-        const { email } = req.body;
-        
-        // Check if user already exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: 'Email already in use' });
-        }
-
-        // Create the service agent account (already verified)
-        const newAgent = new User({
-            ...req.body,
-            role: 'service_agent',
-            isVerified: true
-        });
-
-        await newAgent.save();
-
-        // Send welcome email with credentials using the dedicated template
-        await userSendMail(
-            email,
-            req.body.password,  // Original unencrypted password
-            null,  // Subject will be set by the email handler
-            'Welcome Service Agent',  // Using the new email type
-            res
-        );
-
-        res.status(201).json({
-            message: 'Service agent account created successfully',
-            user: {
-                _id: newAgent._id,
-                email: newAgent.email,
-                firstName: newAgent.firstName,
-                lastName: newAgent.lastName,
-                role: newAgent.role
-            }
-        });
-    } catch (error) {
-        console.error('Error creating service agent:', error);
-        res.status(500).json({ message: error.message || 'Failed to create service agent account' });
-    }
-};
-
-// Update a user's role (admin only)
-const updateUserRole = async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const { role } = req.body;
-
-    // Check if the requesting user is an admin
-    if (req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Access denied. Admin only.' });
-    }
-
-    // Validate role
-    const validRoles = ['admin', 'agent', 'customer'];
-    if (!validRoles.includes(role)) {
-      return res.status(400).json({ message: 'Invalid role specified' });
-    }
-
-    // Find and update the user
-    const user = await User.findById(userId);
+    const user = await User.findById(req.params.userId).select('-password -tokens');
+    
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    user.role = role;
-    await user.save();
-
-    res.json({
-      message: 'User role updated successfully',
-      user: {
-        _id: user._id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        role: user.role
-      }
-    });
+    res.json({ user });
   } catch (error) {
-    console.error('Error updating user role:', error);
-    res.status(500).json({ message: error.message || 'Failed to update user role' });
-  }
-};
-
-// Remove a user (admin only)
-const removeUser = async (req, res) => {
-  try {
-    const { userId } = req.params;
-
-    // Check if the requesting user is an admin
-    if (req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Access denied. Admin only.' });
-    }
-
-    // Find and delete the user
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Don't let admin delete themselves
-    if (user._id.toString() === req.user._id.toString()) {
-      return res.status(400).json({ message: 'Cannot delete your own admin account' });
-    }
-
-    await User.findByIdAndDelete(userId);
-
-    res.json({
-      message: 'User deleted successfully'
-    });
-  } catch (error) {
-    console.error('Error deleting user:', error);
-    res.status(500).json({ message: error.message || 'Failed to delete user' });
+    res.status(500).json({ message: error.message });
   }
 };
 
 module.exports = {
   signUp,
+  createServiceAgent,
   login,
   logout,
-  getProfile,
-  updateProfile,
+  verifyOTP,
+  sendVerification,
+  getCustomers,
   getUserById,
   getAgents,
-  getCustomers,
-  sendVerification,
-  verifyOTP,
+  getProfile,
+  updateProfile,
   uploadProfilePicture,
-  createServiceAgent,
-  updateUserRole,
-  removeUser
 };

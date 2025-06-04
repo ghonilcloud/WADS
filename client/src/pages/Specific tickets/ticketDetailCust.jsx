@@ -95,6 +95,39 @@ const TicketDetailCust = () => {
         }
     };
 
+    // Add auto-refresh for chat messages
+    useEffect(() => {
+        let chatRefreshInterval;
+        
+        // Only set up the interval when chatbox is visible
+        if (showChatbox && ticketId) {
+        const fetchChatMessages = async () => {
+            try {
+            const messagesData = await chatService.getMessages(ticketId);
+            // Only update if we received data and it's different from current messages
+            if (messagesData && JSON.stringify(messagesData) !== JSON.stringify(chatMessages)) {
+                setChatMessages(messagesData);
+            }
+            } catch (err) {
+            console.error("Error refreshing chat messages:", err);
+            // Don't show error to user for background refresh
+            }
+        };
+        
+        // Set up interval - refresh every 3 seconds (3000 ms)
+        chatRefreshInterval = setInterval(fetchChatMessages, 3000);
+        }
+        
+        // Clean up interval when component unmounts or chatbox is closed
+        return () => {
+        if (chatRefreshInterval) {
+            clearInterval(chatRefreshInterval);
+        }
+        };
+    }, [showChatbox, ticketId, chatMessages]);
+
+
+
     const formatDate = (timestamp) => {
         if (!timestamp) return 'N/A';
         return new Intl.DateTimeFormat('en-US', {
