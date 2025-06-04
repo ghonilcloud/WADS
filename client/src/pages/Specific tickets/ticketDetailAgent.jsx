@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; 
-import Header from "../../components/header-agent-all-tickets";
+import Header from "../../components/header-agent-owned-tickets";
 import authService from '../../services/authService';
 import FileAttachments from '../../components/FileAttachments';
 import SatisfactionSurveyModal from '../../components/SatisfactionSurveyModal';
@@ -81,6 +81,38 @@ const TicketDetailAgent = () => {
     }
   }, [chatMessages, showChatbox]);
 
+  // Add auto-refresh for chat messages
+  useEffect(() => {
+    let chatRefreshInterval;
+    
+    // Only set up the interval when chatbox is visible
+    if (showChatbox && ticketId) {
+      const fetchChatMessages = async () => {
+        try {
+          const messagesData = await chatService.getMessages(ticketId);
+          // Only update if we received data and it's different from current messages
+          if (messagesData && JSON.stringify(messagesData) !== JSON.stringify(chatMessages)) {
+            setChatMessages(messagesData);
+          }
+        } catch (err) {
+          console.error("Error refreshing chat messages:", err);
+          // Don't show error to user for background refresh
+        }
+      };
+      
+      // Set up interval - refresh every 3 seconds (3000 ms)
+      chatRefreshInterval = setInterval(fetchChatMessages, 3000);
+    }
+    
+    // Clean up interval when component unmounts or chatbox is closed
+    return () => {
+      if (chatRefreshInterval) {
+        clearInterval(chatRefreshInterval);
+      }
+    };
+  }, [showChatbox, ticketId, chatMessages]);
+
+
   // Fetch customer data when ticket is loaded
   useEffect(() => {
     if (ticket && ticket.userId) {
@@ -100,6 +132,7 @@ const TicketDetailAgent = () => {
       }
       
       const data = await authService.getUserById(id);
+      console.log("Customer data received:", JSON.stringify(data));
       setCustomerData(data);
     } catch (err) {
       console.error("Error fetching customer data:", err);
@@ -292,44 +325,54 @@ const TicketDetailAgent = () => {
             <div className="customer-info-grid">
               <div className="info-item">
                 <span className="info-label">Full Name: </span>
-                <span className="info-value">{customerData.firstName} {customerData.lastName}</span>
+                <span className="info-value">
+                  {`${customerData?.user?.firstName || ''} ${customerData?.user?.lastName || ''}`}
+                </span>
               </div>
               
               <div className="info-item">
                 <span className="info-label">Email: </span>
-                <span className="info-value">{customerData.email || 'Not provided'}</span>
+                <span className="info-value">{customerData?.user?.email || 'Not provided'}</span>
               </div>
               
               <div className="info-item">
                 <span className="info-label">Phone: </span>
-                <span className="info-value">{customerData.phone || 'Not provided'}</span>
+                <span className="info-value">{customerData?.user?.phone || 'Not provided'}</span>
               </div>
               
               <div className="info-item">
                 <span className="info-label">Account Created: </span>
-                <span className="info-value">{customerData.createdAt ? formatDate(customerData.createdAt) : 'Unknown'}</span>
+                <span className="info-value">
+                  {customerData?.user?.createdAt ? formatDate(customerData.user.createdAt) : 'Unknown'}
+                </span>
               </div>
               
               <div className="info-item">
-                <span className="info-label">Address: </span><br></br>
+                <span className="info-label">Address: </span>
                 <span className="info-value">
-                  {customerData.address ? (
+                  {customerData?.user?.address ? (
                     <>
-                      {customerData.address.street ? (
+                      {customerData.user.address.street && (
                         <>
-                          {customerData.address.street}<br />
-                          {customerData.address.city ? `${customerData.address.city}, ` : ''}
-                          {customerData.address.state || ''} {customerData.address.zip || ''}<br />
-                          {customerData.address.country || ''}
+                          {customerData.user.address.street}<br />
+                          {customerData.user.address.city && `${customerData.user.address.city}, `}
+                          {customerData.user.address.state} {customerData.user.address.zip}<br />
+                          {customerData.user.address.country}
                         </>
-                      ) : (
-                        'Not provided'
                       )}
                     </>
                   ) : 'Not provided'}
                 </span>
               </div>
-              <br></br>
+
+              <div className="info-item">
+                <span className="info-label">Gender: </span>
+                <span className="info-value">
+                  {customerData?.user?.gender ? 
+                    customerData.user.gender.charAt(0).toUpperCase() + customerData.user.gender.slice(1) : 
+                    'Not provided'}
+                </span>
+              </div>
             </div>
           </div>
         ) : null)}
@@ -382,7 +425,7 @@ const TicketDetailAgent = () => {
                 <option value="Critical">Critical</option>
               </select>
             ) : (
-              <p className={`priority ${ticket.priority}`}>
+              <p className={ticket.priority === 'Not Assigned' ? 'not-assigned' : `priority ${ticket.priority}`}>
                 {ticket.priority}
               </p>
             )}
@@ -394,7 +437,7 @@ const TicketDetailAgent = () => {
           {isEditing ? (
             <select
               value={editedTicket.status}
-              onChange={(e) => handleChange('status', e.target.value)}
+              onChange={(e) => handleChange('status', e.target.value.toLowerCase())}
               disabled={saving}
             >
               <option value="open">{formatStatus('open')}</option>

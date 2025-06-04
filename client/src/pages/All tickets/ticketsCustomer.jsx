@@ -46,6 +46,11 @@ const TicketsCust = () => {
         fetchData();
     }, [navigate]);
 
+    const truncateText = (text, maxLength = 100) => {
+        if (!text) return '';
+        return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+    };
+
     const toggleDropdown = () => {
         setShowDropdown(prev => !prev);
     };
@@ -71,6 +76,13 @@ const TicketsCust = () => {
         }).format(date);
     };
 
+    const formatStatus = (status) => {
+        return status
+            .split('_')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    };
+
     const getCategoryClass = (category) => {
         const categoryMap = {
             'Product Issues': 'product-issues',
@@ -83,19 +95,6 @@ const TicketsCust = () => {
             'Other': 'other'
         };
         return categoryMap[category] || 'other';
-    };
-
-    const renderRating = (ticket) => {
-        if (!ticket.rating) return null;
-        const stars = '★'.repeat(ticket.rating) + '☆'.repeat(5 - ticket.rating);
-        return (
-            <div className="ticket-rating">
-                <span className="stars">{stars}</span>
-                {ticket.ratingFeedback && (
-                    <p className="rating-feedback">{ticket.ratingFeedback}</p>
-                )}
-            </div>
-        );
     };
   
     return (
@@ -147,10 +146,10 @@ const TicketsCust = () => {
                                         <p className={`category ${getCategoryClass(ticket.category)}`}>
                                             {ticket.category}
                                         </p>
-                                        <p className="description">{ticket.description}</p>
+                                        <p className="description">{truncateText(ticket.description)}</p>
                                         <div className="ticket-footer">
                                             <p className={`status ${ticket.status}`}>
-                                                {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
+                                                {formatStatus(ticket.status)}
                                             </p>
                                             <button 
                                                 className="view-btn"

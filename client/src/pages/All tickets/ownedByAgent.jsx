@@ -13,6 +13,10 @@ const TicketsOwnedByAgent = () => {
     const [error, setError] = useState('');
     const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
+    const truncateText = (text, maxLength = 100) => {
+        if (!text) return '';
+        return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+    };
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -66,6 +70,13 @@ const TicketsOwnedByAgent = () => {
             month: 'long',
             day: 'numeric'
         }).format(date);
+    };
+
+    const formatStatus = (status) => {
+    return status
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
     };
 
     // Map category to class name for styling
@@ -122,12 +133,19 @@ const TicketsOwnedByAgent = () => {
                             <div className="ticket-cards">
                                 {filteredTickets.map(ticket => (
                                     <div className="ticket-card" key={ticket.ticketId}>
+                                        <div className="profile-section">
+                                            <div className="avatar">👤</div>
+                                            <div>
+                                                <h3>{ticket.name}</h3>
+                                                <p className="date">{formatDate(ticket.createdAt)}</p>
+                                            </div>
+                                        </div>
                                         <p className="subject">{ticket.subject}</p>
                                         <p className="date">{formatDate(ticket.createdAt)}</p>
                                         <p className={`category ${getCategoryClass(ticket.category)}`}>{ticket.category}</p>
-                                        <p className="description">{ticket.description}</p>
+                                        <p className="description">{truncateText(ticket.description)}</p>
                                         <p className={`status ${ticket.status}`}>
-                                            {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
+                                            {formatStatus(ticket.status)}
                                         </p>
                                         <Link to={`/ticket-agent/${ticket.ticketId}`}>
                                             <button className="view-btn">View Details</button>

@@ -11,13 +11,13 @@ const Header = () => {
         {/* Desktop Menu */}
         <div className="btn-container">
           <Link to="/login"><button className="btn">Log In</button></Link>
-          <Link to="/signup"><button className="btn">Sign Up</button></Link>
+          <Link to="/signup/form"><button className="btn">Sign Up</button></Link>
         </div>
 
         {/* Mobile Menu */}
         <HamburgerMenu>
           <Link to="/login"><button className="btn">Log In</button></Link>
-          <Link to="/signup"><button className="btn">Sign Up</button></Link>
+          <Link to="/signup/form"><button className="btn">Sign Up</button></Link>
         </HamburgerMenu>
       </header>
     );

@@ -233,7 +233,7 @@ const Analytics = () => {
                                     <tr key={ticket._id}>
                                         <td>{ticket.ticketId}</td>
                                         <td>{ticket.subject}</td>
-                                        <td>{`${ticket.userId.firstName} ${ticket.userId.lastName}`}</td>
+                                        <td>{ticket.userId ? `${ticket.userId.firstName} ${ticket.userId.lastName}`: 'Unknown User'}</td>
                                         <td>{formatDate(ticket.createdAt)}</td>
                                         <td>{ticket.category}</td>
                                         <td className={ticket.priority.toLowerCase()}>

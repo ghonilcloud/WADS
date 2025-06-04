@@ -35,6 +35,11 @@ const TicketsAgent = () => {
         fetchUserData();
     }, [navigate]);
 
+    const truncateText = (text, maxLength = 100) => {
+        if (!text) return '';
+        return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+    };
+
     const fetchTickets = async () => {
         try {
             const ticketsData = await ticketService.getAllTickets(); // Call the method
@@ -68,6 +73,13 @@ const TicketsAgent = () => {
             month: 'long',
             day: 'numeric'
         }).format(date);
+    };
+
+    const formatStatus = (status) => {
+    return status
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
     };
 
     const getCategoryClass = (category) => {
@@ -132,11 +144,11 @@ const TicketsAgent = () => {
                                         </div>
                                         <p className="subject">{ticket.subject}</p>
                                         <p className={`category ${getCategoryClass(ticket.category)}`}>{ticket.category}</p>
-                                        <p className="description">{ticket.description}</p>
+                                        <p className="description">{truncateText(ticket.description)}</p>                                     
                                         <p><strong>Ticket Handler:</strong> <span className={ticket.handler === 'Not Assigned' ? 'not-assigned' : 'handler'}>{ticket.handler}</span></p>
-                                        <p><strong>Priority:</strong> <span className={ticket.priority === 'Not Assigned' ? 'not-assigned' : 'handler'}>{ticket.priority}</span></p>
+                                        <p><strong>Priority:</strong> <span className={`priority ${ticket.priority === 'Not Assigned' ? 'priority-not-assigned' : `priority-${ticket.priority.toLowerCase()}`}`}>{ticket.priority}</span></p>
                                         <p className={`status ${ticket.status}`}>
-                                            {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
+                                            {formatStatus(ticket.status)}
                                         </p>
                                         <Link to={`/ticket-agent/${ticket.ticketId}`}>
                                             <button className="view-btn">View Details</button>
