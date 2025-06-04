@@ -36,6 +36,7 @@ app.use(cookieParser());
 const userRoutes = require('./routes/userRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 const chatRoutes = require('./routes/chatRoutes');
+const analyticsRoutes = require('./routes/analyticsRoutes');
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT;
@@ -43,6 +44,7 @@ const PORT = process.env.PORT;
 app.use('/api/user', userRoutes);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/chats', chatRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 mongoose.set('strictQuery', true);
 mongoose.connect(CONNECTION_URL)

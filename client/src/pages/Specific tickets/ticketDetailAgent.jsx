@@ -91,7 +91,9 @@ const TicketDetailAgent = () => {
   const fetchCustomerData = async (userId) => {
     try {
       setCustomerDataLoading(true);
-      const data = await authService.getUserById(userId);
+      // Extract the actual ID string from the userId object
+      const id = userId._id || userId;
+      const data = await authService.getUserById(id);
       setCustomerData(data);
     } catch (err) {
       console.error("Error fetching customer data:", err);
