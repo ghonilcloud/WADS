@@ -103,9 +103,6 @@ const ticketSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Create an index on ticketId for faster lookups
-ticketSchema.index({ ticketId: 1 });
-
 // Create a compound index on userId and status for filtering user's tickets by status
 ticketSchema.index({ userId: 1, status: 1 });
 
